@@ -1,0 +1,31 @@
+@use '../abstract' as *;
+
+/*----------------------------------------*/
+/*  19. BRAND CSS START
+/*----------------------------------------*/
+
+.brand{
+    // &.swiper-slide {
+    //     -right: 0px !important;
+    // }
+    &__title{
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 50px;
+    }
+    &__more{
+        margin-top: 52px;
+        & .link-btn{
+            color: $black;
+            &:hover{
+                color: $e-blue;
+            }
+        }
+    }
+    &__item {
+        text-align: center;
+    }
+}
+.brand__item img {
+	display: inline-block;
+}
