@@ -555,10 +555,13 @@
     <!-- third party js ends -->
 
     <!-- Datatables init -->
-    <script src="{{ asset('tema') }}/assets/js/pages/datatables.init.js"></script>
+    {{-- <script src="{{ asset('tema') }}/assets/js/pages/datatables.init.js"></script> --}}
 
-    <!-- Dashboar init js-->
-    <script src="{{ asset('tema') }}/assets/js/pages/dashboard.init.js"></script>
+    <!-- Dashboard init js-->
+    <script src="{{ asset('tema') }}/assets/libs/jquery/jquery.min.js"></script>
+    <script src="{{ asset('tema') }}/assets/libs/raphael/raphael.min.js"></script>
+    <script src="{{ asset('tema') }}/assets/libs/morris.js06/morris.min.js"></script>
+    {{-- <script src="{{ asset('tema') }}/assets/js/pages/dashboard.init.js"></script> --}}
 
     <!-- App js-->
     <script src="{{ asset('tema') }}/assets/js/app.min.js"></script>

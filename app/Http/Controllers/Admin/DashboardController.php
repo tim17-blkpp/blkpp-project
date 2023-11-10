@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DashboardResource;
 use App\Models\DeviceModel;
+use App\Models\ProfilModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -28,6 +33,49 @@ class DashboardController extends Controller
             'subtitle',
             'filter',
         ));
+    }
+
+    public function getStatistik(Request $request) {
+        $total_siswa = User::where('role', 'Kandidat')->count();
+        // coming soon cari di database
+        $count_laki = 0;
+        $count_perempuan = 0;
+        // $avg_umur = 24;
+        $avg_umur = round(DB::table('profil')->join('users', 'profil.id_user', '=', 'users.id')
+                                              ->where('users.role', 'Kandidat')
+                                              ->avg(DB::raw('YEAR(CURDATE()) - YEAR(tanggal_lahir)'))
+                        , 2);
+
+        // $login = Auth::attempt($request->all());
+        // return response()->json(['login' => Auth::user()->tokenCan('show:statistic')]);
+        return response()->json([
+            'response_code' => 200,
+            'message' => 'sucess',
+            'data' => [
+                'total_siswa' => $total_siswa,
+                'count_laki' => $count_laki,
+                'count_perempuan' => $count_perempuan,
+                'avg_umur' => $avg_umur,
+                ]
+            ], 200);
+        // if ($login) {
+        //     if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Admin') {
+        //         return response()->json([
+        //             'response_code' => 200,
+        //             'message' => 'sucess',
+        //             'data' => [
+        //                 'total_siswa' => $total_siswa,
+        //                 'count_laki' => $count_laki,
+        //                 'count_perempuan' => $count_perempuan,
+        //                 'avg_umur' => $avg_umur,
+        //             ]
+        //         ]);
+        //     }
+        // }
+        // return response()->json([
+        //     'response_code' => 403,
+        //     'message' => Auth::user()->can('show:statistic')
+        // ])->setStatusCode(403);
     }
 
     /**
