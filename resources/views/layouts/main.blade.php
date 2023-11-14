@@ -11,7 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('tema') }}/assets/images/favicon.ico">
-
     <script src="https://cdn.tiny.cloud/1/9mee81cnt82164mnab200pldy72f233vr4z7ryjvll85lmrq/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     <!-- third party css -->
@@ -536,6 +535,7 @@
 
     <!--Morris Chart-->
     <script src="{{ asset('tema') }}/assets/libs/morris.js06/morris.min.js"></script>
+    <script src="{{ asset('tema') }}/assets/libs/chart.js/Chart.min.js"></script>
     <script src="{{ asset('tema') }}/assets/libs/raphael/raphael.min.js"></script>
 
     <!-- third party js -->
@@ -561,6 +561,7 @@
     <script src="{{ asset('tema') }}/assets/libs/jquery/jquery.min.js"></script>
     <script src="{{ asset('tema') }}/assets/libs/raphael/raphael.min.js"></script>
     <script src="{{ asset('tema') }}/assets/libs/morris.js06/morris.min.js"></script>
+    <script src="{{ asset('tema') }}/assets/libs/chart.js/Chart.min.js"></script>
     {{-- <script src="{{ asset('tema') }}/assets/js/pages/dashboard.init.js"></script> --}}
 
     <!-- App js-->
