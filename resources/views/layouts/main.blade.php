@@ -27,6 +27,30 @@
     <!-- icons -->
     <link href="{{ asset('tema') }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
+    <style>
+        .recap-user{
+            background-color: white;
+            margin: 10px;
+            height: 110px; 
+            border-radius: 10px; 
+            font-size: 25px
+        }
+        .dropdown-filter{
+            height: 50px;
+            background-color: white;
+            border-radius: 10px; 
+            color: #6C757D;
+            padding: 0px 31px;
+            font-size: 18px;
+            border: none
+        }
+        .table-radius{
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+        }
+    </style>
+
 </head>
 
 <!-- body start -->

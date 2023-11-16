@@ -3,10 +3,66 @@
 
 <div>
     <div class="row mb-2">
-        <div id="totalSiswa" style="background-color: white; margin: 10px; height: 110px; border-radius: 10px; font-size: 25px" class="col d-flex justify-content-center align-items-center"></div>
-        <div id="countLaki" style="background-color: white; margin: 10px; height: 110px; border-radius: 10px; font-size: 25px" class="col d-flex justify-content-center align-items-center"></div>
-        <div id="countPerempuan" style="background-color: white; margin: 10px; height: 110px; border-radius: 10px; font-size: 25px" class="col d-flex justify-content-center align-items-center"></div>
-        <div id="avgUmur" style="background-color: white; margin: 10px; height: 110px; border-radius: 10px; font-size: 25px" class="col d-flex justify-content-center align-items-center"></div>
+        <div class="dropdown col">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Tahun
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Desain Grafis</a></li>
+                <li><a class="dropdown-item" href="#">Audio Video</a></li>
+                <li><a class="dropdown-item" href="#">Electro</a></li>
+                <li><a class="dropdown-item" href="#">Electro</a></li>
+                <li><a class="dropdown-item" href="#">Mechanical</a></li>
+                <li><a class="dropdown-item" href="#">Cooking Cookies</a></li>
+            </ul>
+        </div>
+        <div class="dropdown col">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Jenis Anggaran
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+        <div class="dropdown col">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Pelatihan
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+        <div class="dropdown col">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Kejuruan
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+        <div class="dropdown col">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Angkatan
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div id="totalSiswa" class="col d-flex justify-content-center align-items-center recap-user"></div>
+        <div id="countLaki" class="col d-flex justify-content-center align-items-center recap-user"></div>
+        <div id="countPerempuan" class="col d-flex justify-content-center align-items-center recap-user"></div>
+        <div id="avgUmur" class="col d-flex justify-content-center align-items-center recap-user"></div>
     </div>
     
     <div class="row mb-2">
@@ -18,7 +74,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-2">
         <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
             <canvas id="barAnggaran" style="max-width: 100%;"></canvas>
         </div>
@@ -27,6 +83,30 @@
         </div>
     </div>
 
+    <div>
+        <table class="table table-light table-radius">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Tahun</th>
+                    <th scope="col">Dukungan Anggaran</th>
+                    <th scope="col">Angkatan</th>
+                    <th scope="col">Kejuruan</th>
+                    <th scope="col">Pelatihan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php for ($i = 0; $i < 10; $i++) { ?>
+                    <tr>
+                        <td>2021</td>
+                        <td>APBD</td>
+                        <td>1</td>
+                        <td>Desain Grafis</td>
+                        <td>MTU</td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
       <script>
         // mendapatkan token API yang sudah dibuat saat login
         let token = "{{ Session::get('token') }}";
@@ -57,7 +137,7 @@
             var averageumur = document.getElementById("avgUmur");
             averageumur.innerHTML = "Rata-rata Umur " + rataUmur;
 
-            const xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+            const xValues = ["Desain Grafis", "Audio Video", "Electro", "Mechanical", "Cooking Cookies"];
             const yValues = [55, 49, 44, 24, 15];
             const barColors = [
             "#b91d47",
@@ -66,6 +146,8 @@
             "#e8c3b9",
             "#1e7145"
             ];
+
+            let selectedCountry = "Spain";
 
             new Chart("kompetensi", {
             type: "pie",
@@ -88,7 +170,7 @@
                 }
             }
             });
-
+            
             new Chart("pendidikan", {
             type: "doughnut",
             data: {
@@ -120,7 +202,8 @@
                 labels: valueAnggaranX,
                 datasets: [{
                 backgroundColor: "#FBC816",
-                data: valueAnggaranY
+                data: valueAnggaranY,
+                label: "Anggaran"
                 }]
             },
             options: {
@@ -129,7 +212,7 @@
                 text: "Total Anggaran per Tahun",
                 fontSize: 18
                 }
-            }
+            },
             });
 
             // Data for two datasets
@@ -145,14 +228,14 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: "Dataset 1",
+                            label: "Laki-Laki",
                             backgroundColor: "rgba(75, 192, 192, 0.2)",
                             borderColor: "rgba(75, 192, 192, 1)",
                             borderWidth: 1,
                             data: dataset1
                         },
                         {
-                            label: "Dataset 2",
+                            label: "Perempuan",
                             backgroundColor: "rgba(255, 99, 132, 0.2)",
                             borderColor: "rgba(255, 99, 132, 1)",
                             borderWidth: 1,
@@ -174,7 +257,7 @@
                     plugins: {
                         legend: {
                             position: 'top',
-                        },
+                        }
                     },
                 }
             });
