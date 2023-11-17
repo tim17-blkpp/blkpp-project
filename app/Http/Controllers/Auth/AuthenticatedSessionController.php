@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
         // $token = $request->user()->createToken('authToken')->plainTextToken;
         $user = $request->user();
         if ($user->role == 'Super Admin' || $user->role == 'Admin') {
-            $token = $user->createToken('authToken', ['show:statistic'])->plainTextToken;
+            $token = $user->createToken('authToken', ['view:statistic'])->plainTextToken;
         } else {
             $token = $user->createToken('authToken')->plainTextToken;
         }

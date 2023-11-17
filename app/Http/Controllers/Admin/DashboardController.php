@@ -48,16 +48,24 @@ class DashboardController extends Controller
 
         // $login = Auth::attempt($request->all());
         // return response()->json(['login' => Auth::user()->tokenCan('show:statistic')]);
-        return response()->json([
-            'response_code' => 200,
-            'message' => 'sucess',
-            'data' => [
-                'total_siswa' => $total_siswa,
-                'count_laki' => $count_laki,
-                'count_perempuan' => $count_perempuan,
-                'avg_umur' => $avg_umur,
-                ]
-            ], 200);
+        if ($request->user()->tokenCan('view:statistic')) {
+            return response()->json([
+                'response_code' => 200,
+                'message' => 'success',
+                'data' => [
+                    'total_siswa' => $total_siswa,
+                    'count_laki' => $count_laki,
+                    'count_perempuan' => $count_perempuan,
+                    'avg_umur' => $avg_umur,
+                    ]
+                ], 200);
+        }
+        else {
+            return response()->json([
+                'response_code' => 403,
+                'message' => 'Forbidden access'
+            ], 403);
+        }
         // if ($login) {
         //     if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Admin') {
         //         return response()->json([
