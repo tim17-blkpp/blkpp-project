@@ -49,6 +49,16 @@
             overflow: hidden;
             text-align: center;
         }
+        .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: .5em;
+            vertical-align: .25em;
+            content: "";
+            border-top: .3em solid;
+            border-right: .3em solid transparent;
+            border-bottom: 0;
+            border-left: .3em solid transparent;
+        }
     </style>
 
 </head>

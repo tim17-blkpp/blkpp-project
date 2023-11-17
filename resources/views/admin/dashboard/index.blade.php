@@ -3,21 +3,17 @@
 
 <div>
     <div class="row mb-2">
-        <div class="dropdown col">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Tahun
+                <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Desain Grafis</a></li>
-                <li><a class="dropdown-item" href="#">Audio Video</a></li>
-                <li><a class="dropdown-item" href="#">Electro</a></li>
-                <li><a class="dropdown-item" href="#">Electro</a></li>
-                <li><a class="dropdown-item" href="#">Mechanical</a></li>
-                <li><a class="dropdown-item" href="#">Cooking Cookies</a></li>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdown">
+                <!-- Opsi dropdown -->
             </ul>
         </div>
-        <div class="dropdown col">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Jenis Anggaran
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
@@ -26,8 +22,8 @@
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
         </div>
-        <div class="dropdown col">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Pelatihan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
@@ -36,8 +32,8 @@
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
         </div>
-        <div class="dropdown col">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Kejuruan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
@@ -46,8 +42,8 @@
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
         </div>
-        <div class="dropdown col">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Angkatan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
@@ -108,6 +104,27 @@
         </table>
     </div>
       <script>
+        // Mendapatkan elemen dropdown tahun
+        var tahunDropdown = document.getElementById("tahunDropdown");
+
+        // Mendapatkan tahun ini
+        var tahunSekarang = new Date().getFullYear();
+
+        // Menambahkan opsi tahun ini dan 3 tahun kebelakang
+        for (var i = 0; i < 4; i++) {
+            var option = document.createElement("li");
+            option.innerHTML = '<a class="dropdown-item" href="#">' + (tahunSekarang - i) + '</a>';
+            tahunDropdown.appendChild(option);
+        }
+
+        tahunDropdown.addEventListener('click', function (event) {
+            // Mendapatkan nilai tahun yang dipilih
+            var selectedYear = event.target.textContent;
+
+            // Memanggil fungsi untuk mengubah chart berdasarkan tahun yang dipilih
+            updateChart(selectedYear);
+        });
+
         // mendapatkan token API yang sudah dibuat saat login
         let token = "{{ Session::get('token') }}";
 
@@ -146,8 +163,6 @@
             "#e8c3b9",
             "#1e7145"
             ];
-
-            let selectedCountry = "Spain";
 
             new Chart("kompetensi", {
             type: "pie",
@@ -266,7 +281,7 @@
         
         .catch(error => console.error('Error:', error));
 
-        
+
       </script>
 
 @endsection
