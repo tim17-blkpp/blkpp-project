@@ -161,7 +161,11 @@ class PelatihanKandidatController extends Controller
 
         $hasil_pelatihan->update($dataSeleksi);
 
-        return redirect()->route('sesi_pelatihan.show', $hasil_pelatihan->id_sesi)->with(['success' => 'Data Berhasil Disimpan']);
+        if (auth()->user()->role == 'Kandidat') {
+            return redirect()->route('pelatihan-kandidat.index')->with(['success' => 'Data Berhasil Disimpan']);
+        } else {
+            return redirect()->route('sesi_pelatihan.show', $hasil_pelatihan->id_sesi)->with(['success' => 'Data Berhasil Disimpan']);
+        }
     }
 
     /**

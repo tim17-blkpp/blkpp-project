@@ -39,16 +39,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // $token = $request->user()->createToken('authToken')->plainTextToken;
         $user = $request->user();
-        if ($user->role == 'Super Admin' || $user->role == 'Admin') {
-            $token = $user->createToken('authToken', ['show:statistic'])->plainTextToken;
-        } else {
-            $token = $user->createToken('authToken')->plainTextToken;
-        }
+        $token = $user->createToken('authToken')->plainTextToken;
 
         $request->session()->put('token', $token);
-        return redirect()->intended(RouteServiceProvider::HOME)->header('Authorization', 'Bearer ' . $token);
+
+        if ($user->role == 'Kandidat') {
+            return redirect()->route('dashboard-kandidat.index')->with(['success' => 'Selamat Datang Kembali!']);
+        } else {
+            return redirect()->route('dashboard.index')->with(['success' => 'Selamat Datang Kembali!']);
+        }
+
+        // return redirect()->intended(RouteServiceProvider::HOME)->header('Authorization', 'Bearer ' . $token);
         // return response()->json([
         //     'response_code' => 200,
         //     'message' => 'sucess',

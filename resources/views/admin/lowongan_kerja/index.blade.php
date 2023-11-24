@@ -100,7 +100,7 @@
                                         <div class="form-group col-md-12 mb-3">
                                             <label class="col-12 mb-2">Deskripsi</label>
                                             <div class="col-sm-12">
-                                                <textarea name="deskripsi" id="deskripsi" placeholder="Daskripsi..." class="form-control"></textarea>
+                                                <textarea name="deskripsi" id="deskripsi" placeholder="Deskripsi..." class="form-control"></textarea>
                                             </div>
                                         </div>
 

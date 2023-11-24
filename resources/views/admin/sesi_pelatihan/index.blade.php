@@ -34,6 +34,7 @@
                     </div>
 
                     <div class="col-md-12 mt-3">
+                        <a href="{{ route('pelatihan.index') }}" class="ms-auto border-radius-sm btn btn-danger"><i class="ti ti-arrow-left" style="margin-right: 6px;"></i> Kembali </a>
                         <a href="#" class="ms-auto border-radius-sm btn btn-primary" data-bs-toggle="modal" data-bs-target="#createData"><i class="ti ti-plus" style="margin-right: 6px;"></i> Tambah Data {{ $title }}</a>
                     </div>
                     <div class="modal fade" id="createData">
@@ -67,16 +68,47 @@
                                         </div>
 
                                         <div class="form-group col-md-6 mb-3">
+                                            <label class="col-12 mb-2">Angkatan (Tulis: I, II, III, IV, dst.)</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" name="angkatan" class="form-control form-control-normal" placeholder="Angkatan" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label class="col-12 mb-2">Tgl Dibuka</label>
+                                            <div class="col-sm-12">
+                                                <input type="date" name="sesi_dibuka" class="form-control form-control-normal">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label class="col-12 mb-2">Tgl Ditutup</label>
+                                            <div class="col-sm-12">
+                                                <input type="date" name="sesi_ditutup" class="form-control form-control-normal">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6 mb-3">
                                             <label class="col-12 mb-2">Jumlah Peserta</label>
                                             <div class="col-sm-12">
                                                 <input type="number" name="jumlah_peserta" class="form-control form-control-normal" placeholder="0" required>
                                             </div>
                                         </div>
 
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label class="col-12 mb-2">Status</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control" id="sts" name="sts">
+                                                    <option value="0">Simpan Sebagai Draf</option>
+                                                    <option value="1">Tampilkan di Landing</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group col-md-12 mb-3">
                                             <label class="col-12 mb-2">Deskripsi</label>
                                             <div class="col-sm-12">
-                                                <textarea name="deskripsi" id="deskripsi" placeholder="Daskripsi..." class="form-control"></textarea>
+                                                <textarea name="deskripsi" id="deskripsi" placeholder="Deskripsi..." class="form-control"></textarea>
                                             </div>
                                         </div>
 
@@ -98,10 +130,13 @@
                         <thead class="">
                             <tr>
                                 <th class="">No.</th>
-                                <th class="">Pelatihan</th>
                                 <th class="">Judul Sesi</th>
+                                <th class="">Angkatan</th>
+                                <th class="">Tgl Dibuka</th>
+                                <th class="">Tgl Ditutup</th>
                                 <th class="">Kuota Peserta</th>
                                 <th class="">Peserta Mendaftar</th>
+                                <th class="">Status</th>
                                 <th class="">Aksi</th>
                             </tr>
                         </thead>
@@ -115,18 +150,31 @@
                                     {{ $no++ }}
                                 </td>
                                 <td>
-                                    {{ $dt->pelatihan->judul }}
+                                    {{ $dt->judul }}
                                 </td>
                                 <td>
-                                    {{ $dt->judul }}
+                                    {{ $dt->angkatan }}
+                                </td>
+                                <td>
+                                    {{ $dt->sesi_dibuka }}
+                                </td>
+                                <td>
+                                    {{ $dt->sesi_ditutup }}
                                 </td>
                                 <td>
                                     {{ $dt->jumlah_peserta }}
                                 </td>
                                 <td>
                                     <a href="{{ route('sesi_pelatihan.show', $dt->id) }}" class="btn btn-success btn-sm">
-                                        <i class="ti ti-eye" style="margin-right: 8px;"></i> Lihat Peserta
+                                        <i class="ti ti-eye" style="margin-right: 8px;"></i> Lihat ({{ $dt->jumlah_pendaftar }} Peserta)
                                     </a>
+                                </td>
+                                <td>
+                                    @if($dt->status == 0)
+                                    <div class="text-warning">Disimpan Sebagai Draf</div>
+                                    @else
+                                    <div class="text-success">Ditampilkan di Landing</div>
+                                    @endif
                                 </td>
 
                                 <td class="">
@@ -172,6 +220,27 @@
                                                         </div>
 
                                                         <div class="form-group col-md-6 mb-3">
+                                                            <label class="col-12 mb-2">Angkatan (Tulis: I, II, III, IV, dst.)</label>
+                                                            <div class="col-sm-12">
+                                                                <input type="text" name="angkatan" value="{{ $dt->angkatan }}" class="form-control form-control-normal" placeholder="Angkatan" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mb-3">
+                                                            <label class="col-12 mb-2">Tgl Dibuka</label>
+                                                            <div class="col-sm-12">
+                                                                <input type="date" name="sesi_dibuka" value="{{ $dt->sesi_dibuka }}" class="form-control form-control-normal">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mb-3">
+                                                            <label class="col-12 mb-2">Tgl Ditutup</label>
+                                                            <div class="col-sm-12">
+                                                                <input type="date" name="sesi_ditutup" value="{{ $dt->sesi_ditutup }}" class="form-control form-control-normal">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mb-3">
                                                             <label class="col-12 mb-2">Jumlah Peserta</label>
                                                             <div class="col-sm-12">
                                                                 <input type="number" name="jumlah_peserta" value="{{ $dt->jumlah_peserta }}" class="form-control form-control-normal" placeholder="0" required>
@@ -182,6 +251,16 @@
                                                             <label class="col-12 mb-2">Deskripsi</label>
                                                             <div class="col-sm-12">
                                                                 <textarea name="deskripsi" id="deskripsi" placeholder="Daskripsi..." class="form-control">{{ $dt->deskripsi }}</textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mb-3">
+                                                            <label class="col-12 mb-2">Status</label>
+                                                            <div class="col-sm-12">
+                                                                <select class="form-control" id="sts" name="sts">
+                                                                    <option value="0" @if($dt->status==0) selected @endif>Simpan Sebagai Draf</option>
+                                                                    <option value="1" @if($dt->status==1) selected @endif>Tampilkan di Landing</option>
+                                                                </select>
                                                             </div>
                                                         </div>
 

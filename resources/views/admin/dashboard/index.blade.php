@@ -60,7 +60,7 @@
         <div id="countPerempuan" class="col d-flex justify-content-center align-items-center recap-user"></div>
         <div id="avgUmur" class="col d-flex justify-content-center align-items-center recap-user"></div>
     </div>
-    
+
     <div class="row mb-2">
         <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;" >
             <canvas id="barKelamin" style="max-width: 100%;"></canvas>
@@ -140,19 +140,19 @@
         .then(data => {
             // Extract the data object
             var stats = data.data;
-            console.log(data.message);
-            
+            console.log(data.data);
+
             const totalLaki = 19;
             const totalPerempuan = 11;
             const rataUmur = 35;
             var totalsiswa = document.getElementById("totalSiswa");
-            totalsiswa.innerHTML = "Total Siswa " + (stats.total_siswa + 29);
+            totalsiswa.innerHTML = "Total Siswa " + stats.total_siswa;
             var countlaki = document.getElementById("countLaki");
-            countlaki.innerHTML = "Total Laki " + totalLaki;
+            countlaki.innerHTML = "Total Laki " + stats.count_laki  ;
             var countperempuan = document.getElementById("countPerempuan");
-            countperempuan.innerHTML = "Total Perempuan " + totalPerempuan;
+            countperempuan.innerHTML = "Total Perempuan " + stats.count_perempuan;
             var averageumur = document.getElementById("avgUmur");
-            averageumur.innerHTML = "Rata-rata Umur " + rataUmur;
+            averageumur.innerHTML = "Rata-rata Umur " + stats.avg_umur;
 
             const xValues = ["Desain Grafis", "Audio Video", "Electro", "Mechanical", "Cooking Cookies"];
             const yValues = [55, 49, 44, 24, 15];
@@ -185,7 +185,7 @@
                 }
             }
             });
-            
+
             new Chart("pendidikan", {
             type: "doughnut",
             data: {
@@ -278,7 +278,7 @@
             });
         })
 
-        
+
         .catch(error => console.error('Error:', error));
 
 

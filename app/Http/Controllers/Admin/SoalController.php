@@ -38,7 +38,11 @@ class SoalController extends Controller
             'status' => 1,
         ]);
 
-        return redirect()->route('pelatihan.show', $request->id_pelatihan)->with(['success' => 'Data Berhasil Disimpan']);
+        if ($request->tipe == 'Pilihan Ganda') {
+            return redirect()->route('soal.show', $data_input->id)->with(['success' => 'Data Berhasil Disimpan']);
+        } else {
+            return redirect()->route('pelatihan.show', $request->id_pelatihan)->with(['success' => 'Data Berhasil Disimpan']);
+        }
     }
 
     public function show($id)

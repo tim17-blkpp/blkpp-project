@@ -36,25 +36,29 @@ class DashboardController extends Controller
     }
 
     public function getStatistik(Request $request) {
-        $total_siswa = User::where('role', 'Kandidat')->count();
+        $kandidat = User::where('role', 'Kandidat')->get();
+        $total_siswa = $kandidat->count();
         // coming soon cari di database
-        $count_laki = 0;
-        $count_perempuan = 0;
-        // $avg_umur = 24;
-        $avg_umur = round(DB::table('profil')->join('users', 'profil.id_user', '=', 'users.id')
-                                              ->where('users.role', 'Kandidat')
-                                              ->avg(DB::raw('YEAR(CURDATE()) - YEAR(tanggal_lahir)'))
-                        , 2);
+        $count_lk = ProfilModel::join('users', 'profil.id_user', '=', 'users.id')
+                    ->whereIn('users.id', $kandidat->pluck('id'))
+                    ->where('profil.jenis_kelamin', 'L')
+                    ->count();
+        $count_pr = ProfilModel::join('users', 'profil.id_user', '=', 'users.id')
+                    ->whereIn('users.id', $kandidat->pluck('id'))
+                    ->where('profil.jenis_kelamin', 'P')
+                    ->count();
+        $avg_umur = round(ProfilModel::join('users', 'profil.id_user', '=', 'users.id')
+                    ->whereIn('users.id', $kandidat->pluck('id'))
+                    ->avg(DB::raw('YEAR(CURDATE()) - YEAR(tanggal_lahir)'))
+                    , 2);
 
-        // $login = Auth::attempt($request->all());
-        // return response()->json(['login' => Auth::user()->tokenCan('show:statistic')]);
         return response()->json([
             'response_code' => 200,
             'message' => 'sucess',
             'data' => [
                 'total_siswa' => $total_siswa,
-                'count_laki' => $count_laki,
-                'count_perempuan' => $count_perempuan,
+                'count_laki' => $count_lk,
+                'count_perempuan' => $count_pr,
                 'avg_umur' => $avg_umur,
                 ]
             ], 200);

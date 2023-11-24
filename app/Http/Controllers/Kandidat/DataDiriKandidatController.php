@@ -135,16 +135,38 @@ class DataDiriKandidatController extends Controller
             $ijazah = 'berkas/' . $fileNameIjazah;
         }
 
+        $jenis_kelamin = 'L';
+        if ((int)(substr($request->nik, 6, 2)) > 40) {
+            $jenis_kelamin = 'P';
+        }
+
         $dataUserUp['id_kategori'] = $request->name;
         $dataUserUp['judul'] = $request->email;
 
         $dataProfilUp['nik'] = $request->nik;
+        $dataProfilUp['jenis_kelamin'] = $jenis_kelamin;
         $dataProfilUp['tempat_lahir'] = $request->tempat_lahir;
         $dataProfilUp['tanggal_lahir'] = Carbon::createFromFormat('Y-m-d', $request->tanggal_lahir);
         $dataProfilUp['pendidikan'] = $request->pendidikan;
         $dataProfilUp['tahun_pendidikan'] = $request->tahun_pendidikan;
         $dataProfilUp['alamat'] = $request->alamat;
+        $dataProfilUp['alamat_domisili'] = $request->alamat_domisili;
         $dataProfilUp['nomor_hp'] = $request->nomor_hp;
+
+        $pendidikan_sd = $request->instansi_sd . ' | ' . $request->tahun_lulus_sd;
+        $pendidikan_smp = $request->instansi_smp . ' | ' . $request->tahun_lulus_smp;
+        $pendidikan_sma = $request->instansi_sma . ' | ' . $request->jurusan_sma . ' | ' . $request->tahun_lulus_sma;
+        $pendidikan_s1 = $request->instansi_s1 . ' | ' . $request->jurusan_s1 . ' | ' . $request->tahun_lulus_s1;
+        $pendidikan_s2 = $request->instansi_s2 . ' | ' . $request->jurusan_s2 . ' | ' . $request->tahun_lulus_s2;
+        $pendidikan_s3 = $request->instansi_s3 . ' | ' . $request->jurusan_s3 . ' | ' . $request->tahun_lulus_s3;
+
+        $dataProfilUp['pendidikan_sd'] = $pendidikan_sd;
+        $dataProfilUp['pendidikan_smp'] = $pendidikan_smp;
+        $dataProfilUp['pendidikan_sma'] = $pendidikan_sma;
+        $dataProfilUp['pendidikan_s1'] = $pendidikan_s1;
+        $dataProfilUp['pendidikan_s2'] = $pendidikan_s2;
+        $dataProfilUp['pendidikan_s3'] = $pendidikan_s3;
+
         $dataProfilUp['avatar'] = $avatar;
         $dataProfilUp['ktp'] = $ktp;
         $dataProfilUp['ijazah'] = $ijazah;

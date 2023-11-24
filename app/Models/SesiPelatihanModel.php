@@ -12,7 +12,7 @@ class SesiPelatihanModel extends Model
     protected $table = 'sesi_pelatihan';
 
     protected $fillable = [
-        'id_pelatihan', 'judul', 'jumlah_peserta', 'deskripsi', 'status'
+        'id_pelatihan', 'judul', 'jumlah_peserta', 'angkatan', 'sesi_dibuka', 'sesi_ditutup', 'deskripsi', 'status'
     ];
 
     protected $hidden = [];
@@ -20,5 +20,10 @@ class SesiPelatihanModel extends Model
     public function pelatihan()
     {
         return $this->hasOne(PelatihanModel::class, 'id', 'id_pelatihan');
+    }
+
+    public function pendaftar()
+    {
+        return $this->hasMany(HasilPelatihanModel::class, 'id_sesi', 'id');
     }
 }

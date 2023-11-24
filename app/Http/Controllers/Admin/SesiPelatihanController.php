@@ -11,14 +11,20 @@ use Illuminate\Http\Request;
 
 class SesiPelatihanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $toptitle = 'Daftar Sesi Pelatihan';
         $title = 'Sesi Pelatihan';
         $subtitle = 'Data Sesi Pelatihan';
 
-        $all_data = SesiPelatihanModel::with('pelatihan')->orderBy('id', 'DESC')->get();
+        $id_pelatihan = $request->id_pelatihan;
+
+        $all_data = SesiPelatihanModel::with('pelatihan')
+            ->withCount('pendaftar as jumlah_pendaftar')
+            ->where('id_pelatihan', $id_pelatihan)
+            ->orderBy('id', 'DESC')->get();
         $pelatihan = PelatihanModel::orderBy('id', 'DESC')->get();
+        $detail_pelatihan = PelatihanModel::where('id', $id_pelatihan)->first();
 
         return view('admin.sesi_pelatihan.index', compact(
             'toptitle',
@@ -26,6 +32,7 @@ class SesiPelatihanController extends Controller
             'subtitle',
             'pelatihan',
             'all_data',
+            'detail_pelatihan',
         ));
     }
 
@@ -41,14 +48,18 @@ class SesiPelatihanController extends Controller
             'judul' => 'required',
             'deskripsi' => 'required',
             'jumlah_peserta' => 'required',
+            'angkatan' => 'required',
         ]);
 
         $data_input = SesiPelatihanModel::create([
             'id_pelatihan' => $request->id_pelatihan,
             'judul' => $request->judul,
             'jumlah_peserta' => $request->jumlah_peserta,
+            'angkatan' => $request->angkatan,
+            'sesi_dibuka' => $request->sesi_dibuka,
+            'sesi_ditutup' => $request->sesi_ditutup,
             'deskripsi' => $request->deskripsi,
-            'status' => 1,
+            'status' => $request->sts,
         ]);
 
         return redirect()->route('sesi_pelatihan.index')->with(['success' => 'Data Berhasil Disimpan']);
@@ -72,7 +83,11 @@ class SesiPelatihanController extends Controller
             ->with('pelatihan')
             ->with('sesi')
             ->with('user.profil')
+            ->with('user.hasil_pelatihan')
             ->get();
+
+        // echo $all_data;
+        // die();
 
         return view('admin.sesi_pelatihan.daftar_peserta', compact(
             'toptitle',
@@ -101,11 +116,15 @@ class SesiPelatihanController extends Controller
         $dataUp['id_kategori'] = $request->id_kategori;
         $dataUp['judul'] = $request->judul;
         $dataUp['jumlah_peserta'] = $request->jumlah_peserta;
+        $dataUp['angkatan'] = $request->angkatan;
+        $dataUp['sesi_dibuka'] = $request->sesi_dibuka;
+        $dataUp['sesi_ditutup'] = $request->sesi_ditutup;
         $dataUp['deskripsi'] = $request->deskripsi;
-        $dataUp['status'] = 1;
+        $dataUp['status'] = $request->sts;
 
         $data_edit->update($dataUp);
-        return redirect()->route('sesi_pelatihan.index')->with(['success' => 'Data Berhasil Disimpan']);
+        return redirect()->route('sesi_pelatihan.index', ['id_pelatihan' => $data_edit->id_pelatihan])
+            ->with('success', 'Data Berhasil Disimpan');
     }
 
     public function destroy($id)

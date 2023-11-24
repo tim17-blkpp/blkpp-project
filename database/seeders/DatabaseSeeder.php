@@ -16,5 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(KonfigurasiSeeder::class);
         $this->call(SuperadminSeeder::class);
+        $this->call(ProfilSeeder::class);
+        $this->call(JPLSeeder::class);
     }
 }

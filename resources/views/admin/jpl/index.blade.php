@@ -65,7 +65,12 @@
                                         <div class="form-group col-md-12 mb-3">
                                             <label class="col-12 mb-2">Anggaran</label>
                                             <div class="col-sm-12">
-                                                <input type="text" name="anggaran" class="form-control form-control-normal" placeholder="Anggaran" required>
+                                                <select name="anggaran" class="form-control form-control-normal" required>
+                                                    <option>APBN</option>
+                                                    <option>APBD</option>
+                                                    <option>DAIS</option>
+                                                    <option>DBHCHT</option>
+                                                </select>
                                             </div>
                                         </div>
 
@@ -173,9 +178,16 @@
                                                     <div class="form-group col-md-12 mb-3">
                                                         <label class="col-12 mb-2">Anggaran</label>
                                                         <div class="col-sm-12">
-                                                            <input type="text" value="{{ $dt->anggaran }}" name="anggaran" class="form-control form-control-normal" placeholder="Anggaran" required>
+                                                            <select name="anggaran" class="form-control form-control-normal" required>
+                                                                <option @if($dt->anggaran == 'APBN') selected @endif>APBN</option>
+                                                                <option @if($dt->anggaran == 'APBD') selected @endif>APBD</option>
+                                                                <option @if($dt->anggaran == 'DAIS') selected @endif>DAIS</option>
+                                                                <option @if($dt->anggaran == 'DBHCHT') selected @endif>DBHCHT</option>
+                                                            </select>
                                                         </div>
                                                     </div>
+
+
 
                                                     <div class="form-group col-md-12 mb-3">
                                                         <label class="col-12 mb-2">Kode</label>

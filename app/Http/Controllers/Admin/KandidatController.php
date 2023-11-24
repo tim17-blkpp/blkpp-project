@@ -16,9 +16,9 @@ class KandidatController extends Controller
      */
     public function index()
     {
-        $toptitle = 'Daftar Kandidat';
-        $title = 'Kandidat';
-        $subtitle = 'Data Kandidat';
+        $toptitle = 'Daftar Calon Peserta';
+        $title = 'Calon Peserta';
+        $subtitle = 'Data Calon Peserta';
 
         $all_data = User::where('role', 'Kandidat')->with('profil')->orderBy('id', 'DESC')->get();
 

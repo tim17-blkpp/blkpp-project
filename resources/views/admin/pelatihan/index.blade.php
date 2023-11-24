@@ -50,7 +50,7 @@
 
                                         <div class="form-group col-md-6 mb-3">
                                             <label class="col-12 mb-2">Kategori</label>
-                                            <div class="col-sm-12">
+                                            <div class="col-12">
                                                 <select class="form-control" id="id_kategori" name="id_kategori">
                                                     @foreach($kategori as $dt)
                                                     <option value="{{ $dt->id }}">{{ $dt->nama }}</option>
@@ -61,7 +61,7 @@
 
                                         <div class="form-group col-md-6 mb-3">
                                             <label class="col-12 mb-2">JPL</label>
-                                            <div class="col-sm-12">
+                                            <div class="col-12">
                                                 <select class="form-control" id="id_jpl" name="id_jpl">
                                                     @foreach($jpl as $dtj)
                                                     <option value="{{ $dtj->id }}">{{ $dtj->pelatihan .' | '. $dtj->tahun .' | '.$dtj->kode }}</option>
@@ -72,27 +72,37 @@
 
                                         <div class="form-group col-md-6 mb-3">
                                             <label class="col-12 mb-2">Judul</label>
-                                            <div class="col-sm-12">
+                                            <div class="col-12">
                                                 <input type="text" name="judul" class="form-control form-control-normal" placeholder="Judul" required>
                                             </div>
                                         </div>
 
                                         <div class="form-group col-md-6 mb-3">
                                             <label class="col-12 mb-2">Gambar (1000 x 500) px</label>
-                                            <div class="col-sm-12">
+                                            <div class="col-12">
                                                 <input type="file" name="gambar" class="form-control form-control-normal" placeholder="Gambar">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6 mb-3">
+                                            <label class="col-12 mb-2">Status</label>
+                                            <div class="col-12">
+                                                <select class="form-control" id="sts" name="sts">
+                                                    <option value="0">Simpan Sebagai Draf</option>
+                                                    <option value="1">Tampilkan di Landing</option>
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="form-group col-md-12 mb-3">
                                             <label class="col-12 mb-2">Deskripsi</label>
-                                            <div class="col-sm-12">
-                                                <textarea name="deskripsi" id="deskripsi" placeholder="Daskripsi..." class="form-control"></textarea>
+                                            <div class="col-12">
+                                                <textarea name="deskripsi" id="deskripsi" placeholder="Deskripsi..." class="form-control"></textarea>
                                             </div>
                                         </div>
 
                                         <div class="form-group col-md-12 mb-3">
-                                            <div class="col-sm-12">
+                                            <div class="col-12">
                                                 <button type="submit" class="btn btn-primary"><i class="far fa-save" style="margin-right: 8px;"></i> Simpan Perubahan</button>
                                             </div>
                                         </div>
@@ -110,8 +120,8 @@
                             <tr>
                                 <th class="">No.</th>
                                 <th class="">Pelatihan</th>
-                                <th class="">Gambar</th>
-                                <th class="">Tes</th>
+                                <th class="">Informasi</th>
+                                <th class="">Kelola</th>
                                 <th class="">Aksi</th>
                             </tr>
                         </thead>
@@ -125,23 +135,39 @@
                                     {{ $no++ }}
                                 </td>
                                 <td>
-                                    <small><strong><u>Kategori: </u></strong></small>
-                                    <br>
-                                    {{ $dt->kategori->nama }}
+                                    <img class="border" src="{{ asset($dt->gambar) }}" height="80" alt="">
                                     <br>
                                     <small><strong><u>Judul: </u></strong></small>
                                     <br>
                                     {{ $dt->judul }}
                                     <br>
+                                    <small><strong><u>Kode Pelatihan: </u></strong></small>
+                                    <br>
+                                    {{ sprintf('%04d', $dt->id) }}.1.{{ $dt->jpl->kode }}.@if($dt->jpl->jpl >= 200){{ '2' }}@else {{ '1' }}@endif.{{ substr($dt->jpl->tahun, -2); }}
+                                </td>
+                                <td>
+                                    <small><strong><u>Kategori: </u></strong></small>
+                                    <br>
+                                    {{ $dt->kategori->nama }}
+                                    <br>
                                     <small><strong><u>JPL: </u></strong></small>
                                     <br>
                                     {{ $dt->jpl->pelatihan .' | '. $dt->jpl->tahun .' | '.$dt->jpl->kode }}
+                                    <br>
+                                    <small><strong><u>Status: </u></strong></small>
+                                    <br>
+                                    @if($dt->status == 0)
+                                    <div class="text-warning">Disimpan Sebagai Draf</div>
+                                    @else
+                                    <div class="text-success">Ditampilkan di Landing</div>
+                                    @endif
                                 </td>
                                 <td>
-                                    <img src="{{ asset($dt->gambar) }}" height="80" alt="">
-                                </td>
-                                <td>
-                                    <a href="{{ route('pelatihan.show', $dt->id) }}" class="btn btn-success btn-sm">
+                                    <a href="{{ route('sesi_pelatihan.index') . '?id_pelatihan=' . $dt->id }}" class="btn btn-success btn-sm mb-1">
+                                        <i class="ti ti-layout-list-thumb" style="margin-right: 8px;"></i> Kelola Sesi
+                                    </a>
+                                    <br>
+                                    <a href="{{ route('pelatihan.show', $dt->id) }}" class="btn btn-success btn-sm mb-1">
                                         <i class="ti ti-layout-list-thumb" style="margin-right: 8px;"></i> Kelola Tes
                                     </a>
                                 </td>
@@ -170,7 +196,7 @@
                                                     <div class="row">
                                                         <div class="form-group col-md-6 mb-3">
                                                             <label class="col-12 mb-2">Kategori</label>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-12">
                                                                 <select class="form-control" id="id_kategori" name="id_kategori">
                                                                     @foreach($kategori as $dtk)
                                                                     <option value="{{ $dtk->id }}" @if($dt->id_kategori==$dtk->id) selected @endif>{{ $dtk->nama }}</option>
@@ -182,7 +208,7 @@
 
                                                         <div class="form-group col-md-6 mb-3">
                                                             <label class="col-12 mb-2">JPL</label>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-12">
                                                                 <select class="form-control" id="id_jpl" name="id_jpl">
                                                                     @foreach($jpl as $dtj)
                                                                     <option value="{{ $dtj->id }}" @if($dt->id_jpl==$dtj->id) selected @endif>{{ $dtj->pelatihan .' | '. $dtj->tahun .' | '.$dtj->kode }}</option>
@@ -193,27 +219,37 @@
 
                                                         <div class="form-group col-md-6 mb-3">
                                                             <label class="col-12 mb-2">Judul</label>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-12">
                                                                 <input type="text" name="judul" value="{{ $dt->judul }}" class="form-control form-control-normal" placeholder="Judul" required>
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group col-md-6 mb-3">
                                                             <label class="col-12 mb-2">Gambar (1000 x 500) px</label>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-12">
                                                                 <input type="file" name="gambar" class="form-control form-control-normal" placeholder="Gambar">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mb-3">
+                                                            <label class="col-12 mb-2">Status</label>
+                                                            <div class="col-12">
+                                                                <select class="form-control" id="sts" name="sts">
+                                                                    <option value="0" @if($dt->status==0) selected @endif>Simpan Sebagai Draf</option>
+                                                                    <option value="1" @if($dt->status==1) selected @endif>Tampilkan di Landing</option>
+                                                                </select>
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group col-md-12 mb-3">
                                                             <label class="col-12 mb-2">Deskripsi</label>
-                                                            <div class="col-sm-12">
+                                                            <div class="col-12">
                                                                 <textarea name="deskripsi" id="deskripsi" placeholder="Daskripsi..." class="form-control">{{ $dt->deskripsi }}</textarea>
                                                             </div>
                                                         </div>
 
                                                         <div class="form-group col-md-12 mb-3">
-                                                            <div class="col-sm-12">
+                                                            <div class="col-12">
                                                                 <button type="submit" class="btn btn-primary"><i class="far fa-save" style="margin-right: 8px;"></i> Simpan Perubahan</button>
                                                             </div>
                                                         </div>

@@ -31,14 +31,14 @@
         .recap-user{
             background-color: white;
             margin: 10px;
-            height: 110px; 
-            border-radius: 10px; 
+            height: 110px;
+            border-radius: 10px;
             font-size: 25px
         }
         .dropdown-filter{
             height: 50px;
             background-color: white;
-            border-radius: 10px; 
+            border-radius: 10px;
             color: #6C757D;
             padding: 0px 31px;
             font-size: 18px;
@@ -208,6 +208,27 @@
                     </div>
 
                     @elseif(auth()->user()->role == 'Perusahaan')
+                    <ul id="side-menu">
+
+                        <li class="menu-title">Navigation</li>
+
+                        <li>
+                            <a class="@if($title=='Dashboard') active @endif" href="{{ route('dashboard.index') }}">
+                                <i class="mdi mdi-view-dashboard-outline"></i>
+                                <span class="badge bg-success rounded-pill float-end">9+</span>
+                                <span> Dashboard </span>
+                            </a>
+                        </li>
+
+                        <li class="menu-title mt-2">Akses Umum</li>
+
+                        <li>
+                            <a class="@if($title=='Lowongan Kerja') active @endif" href="{{ route('lowongan_kerja.index') }}">
+                                <i class="mdi mdi-clipboard-multiple-outline"></i>
+                                <span> Lowongan Kerja </span>
+                            </a>
+                        </li>
+                    </ul>
 
                     @else
 
@@ -239,9 +260,9 @@
                                     <li>
                                         <a class="@if($title=='Pelatihan') active @endif" href="{{ route('pelatihan.index') }}">Pelatihan</a>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a class="@if($title=='Sesi Pelatihan') active @endif" href="{{ route('sesi_pelatihan.index') }}">Sesi Pelatihan</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                         </li>
@@ -324,14 +345,14 @@
                         <li>
                             <a class="@if($title=='kandidat') active @endif" href="{{ route('kandidat.index') }}">
                                 <i class="mdi mdi-account-lock-outline"></i>
-                                <span> Kandidat </span>
+                                <span> Calon Peserta </span>
                             </a>
                         </li>
 
                         <li>
                             <a class="@if($title=='Siswa') active @endif" href="{{ route('siswa.index') }}">
                                 <i class="mdi mdi-account-multiple-outline"></i>
-                                <span> Siswa </span>
+                                <span> Peserta </span>
                             </a>
                         </li>
 
@@ -357,6 +378,24 @@
                                 <span> JPL </span>
                             </a>
                         </li>
+
+                        {{-- <li>
+                            <a href="#profil_blkpp" data-bs-toggle="collapse">
+                                <i class="mdi mdi-clipboard-flow-outline"></i>
+                                <span> Profil BLKPP </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="collapse" id="profil_blkpp">
+                                <ul class="nav-second-level">
+                                    <li>
+                                        <a class="@if($title=='Kategori Profil BLKPP') active @endif" href="{{ route('kategori_profil_blkpp.index') }}">Kategori</a>
+                                    </li>
+                                    <li>
+                                        <a class="@if($title=='Profil BLKPP') active @endif" href="{{ route('profil_blkpp.index') }}">Profil BLKPP</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li> --}}
 
                         <li>
                             <a href="#">
@@ -644,3 +683,4 @@
 </body>
 
 </html>
+

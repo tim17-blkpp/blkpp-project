@@ -49,6 +49,16 @@
                             </div>
 
                             <div class="form-group col-md-6 mb-3">
+                                <label class="col-12 mb-2" for="jenis_kelamin">Jenis Kelamin</label>
+                                <div class="col-sm-12">
+                                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control form-control-normal" placeholder="Jenis Kelamin" disabled>
+                                        <option value="Laki - Laki" @if(auth()->user()->profil->jenis_kelamin=='L') selected @endif>Laki - Laki</option>
+                                        <option value="Perempuan" @if(auth()->user()->profil->jenis_kelamin=='P') selected @endif>Perempuan</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
                                 <label class="col-12 mb-2">Email</label>
                                 <div class="col-sm-12">
                                     <input type="email" name="email" value="{{ auth()->user()->email }}" class="form-control form-control-normal" placeholder="Email" required>
@@ -96,24 +106,143 @@
                             </div>
 
                             <div class="form-group col-md-6 mb-3">
-                                <label class="col-12 mb-2">Pendidikan</label>
-                                <div class="col-sm-12">
-                                    <input type="text" name="pendidikan" value="{{ $profil->pendidikan }}" class="form-control form-control-normal" placeholder="Pendidikan">
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-6 mb-3">
-                                <label class="col-12 mb-2">Tahun Pendidikan</label>
-                                <div class="col-sm-12">
-                                    <input type="text" name="tahun_pendidikan" value="{{ $profil->tahun_pendidikan }}" class="form-control form-control-normal" placeholder="Tahun Pendidikan">
-                                </div>
-                            </div>
-
-                            <div class="form-group col-md-12 mb-3">
                                 <label class="col-12 mb-2">Alamat Lengkap (Sesuai KTP)</label>
                                 <div class="col-sm-12">
                                     <input type="text" name="alamat" value="{{ $profil->alamat }}" class="form-control form-control-normal" placeholder="Alamat">
                                 </div>
+                            </div>
+
+                            {{-- <div class="form-group col-md-6 mb-3">
+                                <label class="col-12 mb-2">Alamat Domisili</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="alamat_domisili" value="{{ $profil->alamat_domisili }}" class="form-control form-control-normal" placeholder="Alamat Domisili">
+                                </div>
+                            </div> --}}
+
+                            <div class="form-group text-center col-md-12 mb-3">
+                                <hr>
+                                <h4>RIWAYAT PENDIDIKAN</h4>
+                                <small>Tuliskan dengan lengkap <span class="text-primary"> instansi, jurusan, tahun lulus! </span>.</small>
+                                <hr>
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="col-12 mb-2">Instansi SD</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="instansi_sd" value="{{ explode(' | ', $profil->pendidikan_sd)[0] }}" class="form-control form-control-normal" placeholder="Instansi SD">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="col-12 mb-2">Tahun Lulus SD</label>
+                                <div class="col-sm-12">
+                                    <input type="number" name="tahun_lulus_sd" value="@if($profil->pendidikan_sd != null){{ explode(' | ', $profil->pendidikan_sd)[1] }}@endif" class="form-control form-control-normal" placeholder="Tahun Lulus SD">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="col-12 mb-2">Instansi SMP</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="instansi_smp" value="{{ explode(' | ', $profil->pendidikan_smp)[0] }}" class="form-control form-control-normal" placeholder="Instansi SMP">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="col-12 mb-2">Tahun Lulus SMP</label>
+                                <div class="col-sm-12">
+                                    <input type="number" name="tahun_lulus_smp" value="@if($profil->pendidikan_smp != null){{ explode(' | ', $profil->pendidikan_smp)[1] }}@endif" class="form-control form-control-normal" placeholder="Tahun Lulus SMP">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Instansi SMA/SMK</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="instansi_sma" value="{{ explode(' | ', $profil->pendidikan_sma)[0] }}" class="form-control form-control-normal" placeholder="Instansi SMA/SMK">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Jurusan SMA/SMK</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="jurusan_sma" value="@if($profil->pendidikan_sma != null){{ explode(' | ', $profil->pendidikan_sma)[1] }}@endif" class="form-control form-control-normal" placeholder="Jurusan SMA/SMK">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Tahun Lulus SMA/SMK</label>
+                                <div class="col-sm-12">
+                                    <input type="number" name="tahun_lulus_sma" value="@if($profil->pendidikan_sma != null){{ explode(' | ', $profil->pendidikan_sma)[2] }}@endif" class="form-control form-control-normal" placeholder="Tahun Lulus SMA/SMK">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Instansi S1</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="instansi_s1" value="{{ explode(' | ', $profil->pendidikan_s1)[0] }}" class="form-control form-control-normal" placeholder="Instansi S1">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Jurusan S1</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="jurusan_s1" value="@if($profil->pendidikan_s1 != null){{ explode(' | ', $profil->pendidikan_s1)[1] }}@endif" class="form-control form-control-normal" placeholder="Jurusan S1">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Tahun Lulus S1</label>
+                                <div class="col-sm-12">
+                                    <input type="number" name="tahun_lulus_s1" value="@if($profil->pendidikan_s1 != null){{ explode(' | ', $profil->pendidikan_s1)[2] }}@endif" class="form-control form-control-normal" placeholder="Tahun Lulus S1">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Instansi S2</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="instansi_s2" value="{{ explode(' | ', $profil->pendidikan_s2)[0] }}" class="form-control form-control-normal" placeholder="Instansi S2">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Jurusan S2</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="jurusan_s2" value="@if($profil->pendidikan_s2 != null){{ explode(' | ', $profil->pendidikan_s2)[1] }}@endif" class="form-control form-control-normal" placeholder="Jurusan S2">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Tahun Lulus S2</label>
+                                <div class="col-sm-12">
+                                    <input type="number" name="tahun_lulus_s2" value="@if($profil->pendidikan_s2 != null){{ explode(' | ', $profil->pendidikan_s2)[2] }}@endif" class="form-control form-control-normal" placeholder="Tahun Lulus S2">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Instansi S3</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="instansi_s3" value="{{ explode(' | ', $profil->pendidikan_s3)[0] }}" class="form-control form-control-normal" placeholder="Instansi S3">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Jurusan S3</label>
+                                <div class="col-sm-12">
+                                    <input type="text" name="jurusan_s3" value="@if($profil->pendidikan_s3 != null){{ explode(' | ', $profil->pendidikan_s3)[1] }}@endif" class="form-control form-control-normal" placeholder="Jurusan S3">
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-3">
+                                <label class="col-12 mb-2">Tahun Lulus S3</label>
+                                <div class="col-sm-12">
+                                    <input type="number" name="tahun_lulus_s3" value="@if($profil->pendidikan_s3 != null){{ explode(' | ', $profil->pendidikan_s3)[2] }}@endif" class="form-control form-control-normal" placeholder="Tahun Lulus S3">
+                                </div>
+                            </div>
+
+                            <div class="form-group text-center col-md-12 mb-3">
+                                <hr>
+                                <h4>DOKUMEN PENDAFTARAN</h4>
+                                <small>Dokumen ini digunakan untuk verifikasi data <span class="text-primary"> saat mendaftar pelatihan </span>.</small>
+                                <hr>
                             </div>
 
                             <div class="form-group col-md-6 mb-3">
@@ -191,6 +320,31 @@
                                 </div>
                             </div>
 
+                            <div class="form-group col-md-6 mb-3">
+                                <label class="col-12 mb-2">Sertifikat Vaksin</label>
+                                <div class="col-sm-12">
+                                    <input type="file" name="sertifikat_vaksin" id="sertifikat_vaksin" class="form-control form-control-normal">
+                                    <img src="{{ asset($profil->sertifikat_vaksin) }}" alt="Gambar yang Dipilih" class="mt-1" id="gambarVaksin" height="80">
+                                    <script>
+                                        const inputVaksin = document.getElementById('sertifikat_vaksin');
+                                        const gambarVaksin = document.getElementById('gambarVaksin');
+
+                                        inputVaksin.addEventListener('change', function(event) {
+                                            const file = event.target.files[0];
+                                            const reader = new FileReader();
+
+                                            reader.onload = function() {
+                                                gambarVaksin.src = reader.result;
+                                            };
+
+                                            if (file) {
+                                                reader.readAsDataURL(file);
+                                            }
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+
                             <div class="form-group col-md-12 mb-3">
                                 <div class="col-sm-12">
                                     <button type="submit" class="btn btn-primary"><i class="far fa-save" style="margin-right: 8px;"></i> Simpan Perubahan</button>
@@ -198,6 +352,7 @@
                             </div>
 
                             <div class="form-group text-center col-md-12 mb-3">
+                                <hr>
                                 <h4>UBAH PASSWORD</h4>
                                 <small>Jika tidak ingin mengubah password maka pastikan <span class="text-primary"> form password baru dan ulangi password kosong </span>.</small>
                                 <hr>

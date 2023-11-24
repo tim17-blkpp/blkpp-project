@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(ProfilModel::class, 'id_user', 'id');
     }
+
+    public function hasil_pelatihan()
+    {
+        return $this->hasMany(HasilPelatihanModel::class, 'id_user', 'id');
+    }
+
 }

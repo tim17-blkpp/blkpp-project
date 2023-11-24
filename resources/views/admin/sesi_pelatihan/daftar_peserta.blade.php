@@ -157,7 +157,7 @@
                                     </strong>
 
                                     <div class="modal fade" id="seleksi_administrasi{{ $dt->id }}">
-                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-dialog modal-dialog-centered modal-xl">
                                             <div class="modal-content">
 
                                                 <div class="modal-header">
@@ -167,6 +167,62 @@
                                                 <div class="modal-body">
                                                     <div class="row p-2">
                                                         @if($dt->user->profil != null)
+                                                        <div class="col-12 p-2 bg-warning text-center border"><strong>DATA DIRI</strong></div>
+                                                        <table class="table border">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><strong>Nama Lengkap</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Alamat Email</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->email }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Nomor HP.</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->profil->nomor_hp }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Tempat, Tanggal Lahir</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->profil->tempat_lahir .', '. $dt->user->profil->tanggal_lahir }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>NIK / No. KTP</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->profil->nik }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Alamat Domisili</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->profil->alamat }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Pendidikan</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->profil->pendidikan }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Tahun</strong></td>
+                                                                    <td><strong>:</strong> {{ $dt->user->profil->tahun_pendidikan }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>Riwayat Pelatihan</strong></td>
+                                                                    <td>
+                                                                        @if($dt->user->hasil_pelatihan != null)
+                                                                        @foreach($dt->user->hasil_pelatihan as $hpl)
+                                                                        -
+                                                                        @if($hpl->pelatihan != null)
+                                                                        {{ $hpl->pelatihan->judul }}
+                                                                        @endif
+                                                                        @if($hpl->sesi != null)
+                                                                        {{ ' | ' . $hpl->sesi->judul }}
+                                                                        @endif
+                                                                        {{ ' | ' . $hpl->keterangan }}
+                                                                        <br>
+                                                                        @endforeach
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="col-12 p-2 bg-warning text-center border"><strong>DOKUMEN IDENTITAS</strong></div>
                                                         <a class="col-md-6 p-2 text-center border" href="{{ asset($dt->user->profil->avatar) }}" target="_blank">
                                                             <strong><u>Foto :</u></strong><br><br>
                                                             <img src="{{ asset($dt->user->profil->avatar) }}" height="120" alt="">
@@ -227,7 +283,9 @@
                                     <br>
                                     @endif
 
-                                    @if($dt->status_seleksi_tes == 'Menunggu' || $dt->status_seleksi_tes == null)
+                                    @if($dt->status_seleksi_tes == null)
+                                    <small>Status: <u class="text-primary"><i>-</i></u></small>
+                                    @elseif($dt->status_seleksi_tes == 'Menunggu')
                                     <!--<a href="{{ route('jawaban_user.index') . '?id_hasil_seleksi=' . $dt->id }}"><u class="text-warning"><i class="ti ti-eye" style="margin-right: 2px;"></i> <i>Lihat Jawaban</i></u></a>-->
                                     <!--<br>-->
                                     <small>Status: <u class="text-primary"><i>{{ $dt->status_seleksi_tes }}</i></u></small>
@@ -316,7 +374,9 @@
                                     <br>
                                     @endif
 
-                                    @if($dt->status_seleksi_wawancara == 'Menunggu')
+                                    @if($dt->status_seleksi_wawancara == null)
+                                    <small>Status: <u class="text-primary"><i>-</i></u></small>
+                                    @elseif($dt->status_seleksi_wawancara == 'Menunggu')
                                     <small>Status: <u class="text-primary"><i>{{ $dt->status_seleksi_wawancara }}</i></u></small>
                                     @elseif($dt->status_seleksi_wawancara == 'Lolos')
                                     <small>Status: <u class="text-success"><i>{{ $dt->status_seleksi_wawancara }}</i></u></small>
@@ -385,28 +445,34 @@
                                     @if($dt->status_seleksi_wawancara=='Lolos')
                                     @if($dt->hasil_seleksi_daftar_ulang != null && $dt->hasil_seleksi_daftar_ulang != '')
 
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#daftar_ulang{{ $dt->id }}"><u class="text-warning"><i class="ti ti-eye" style="margin-right: 2px;"></i> <i>Lihat Detail</i></u></a>
+                                    @endif
 
-                                    <div class="modal fade" id="daftar_ulang{{ $dt->id }}">
-                                        <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal fade" id="pakta_integritas{{ $dt->id }}">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" style=" max-width: 80%;">
                                             <div class="modal-content">
 
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title"><strong>Hasil Daftar Ulang : </strong></h5>
+                                                    <h5 class="modal-title"><strong>Pakta Integritas : </strong></h5>
                                                 </div>
 
                                                 <div class="modal-body">
-                                                    Lihat Pakta Integritas : <a href="{{ asset($dt->pakta_integritas) }}" target="_blank"><u class="text-warning"><i class="ti ti-eye" style="margin-right: 2px;"></i> <i>Lihat Berkas</i></u></a>
-                                                    <br><br>
-                                                    {!! $dt->hasil_seleksi_daftar_ulang !!}
+                                                    <div class="col-12">
+                                                        <iframe src="{{ route('landing.pakta') }}" class="border" height="400" style="width: 100%;"></iframe>
+                                                        <br><br>
+                                                        <input disabled type="checkbox" value="Menunggu" name="status_seleksi_daftar_ulang" @if($dt->status_seleksi_daftar_ulang=='Menunggu') checked @endif><strong> Pakta Integritas Disetujui</strong>
+                                                        <br><br>
+                                                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Tutup</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <br>
-                                    @endif
 
-                                    @if($dt->status_seleksi_daftar_ulang == 'Menunggu')
+                                    @if($dt->status_seleksi_daftar_ulang == null)
+                                    <small>Status: <u class="text-primary"><i>-</i></u></small>
+                                    @elseif($dt->status_seleksi_daftar_ulang == 'Menunggu')
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#pakta_integritas{{ $dt->id }}"><u class="text-primary"><i class="ti ti-check" style="margin-right: 2px;"></i> <i>Pakta Integritas Disetujui</i></u></a>
+                                    <br>
                                     <small>Status: <u class="text-primary"><i>{{ $dt->status_seleksi_daftar_ulang }}</i></u></small>
                                     @elseif($dt->status_seleksi_daftar_ulang == 'Lolos')
                                     <small>Status: <u class="text-success"><i>{{ $dt->status_seleksi_daftar_ulang }}</i></u></small>
@@ -449,14 +515,14 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group col-md-12 mb-3">
+                                                            <div class="form-group col-md-12 mb-3" hidden>
                                                                 <label class="col-12 mb-2">Hasil / Catatan</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="text" name="hasil_seleksi_daftar_ulang" value="{{ $dt->hasil_seleksi_daftar_ulang }}" class="form-control form-control-normal" placeholder="Hasil / Catatan">
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group col-md-12 mb-3">
+                                                            <div class="form-group col-md-12 mb-3" hidden>
                                                                 <label class="col-12 mb-2">Pakta Integritas</label>
                                                                 <div class="col-sm-12">
                                                                     <input type="file" name="pakta_integritas" class="form-control form-control-normal" placeholder="Pakta Integritas">

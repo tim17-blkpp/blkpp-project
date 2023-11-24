@@ -41,13 +41,24 @@
                             <form method="POST" action="{{ route('register') }}">
                                 @csrf
                                 <div class="sign__input-wrapper mb-25">
+                                    <h5>Sebagai</h5>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="role1" name="role" value="Kandidat" checked>Peserta
+                                        <label class="form-check-label" for="role1"></label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="role2" name="role" value="Perusahaan">Perusahaan
+                                        <label class="form-check-label" for="role2"></label>
+                                    </div>
+                                </div>
+                                <div class="sign__input-wrapper mb-25">
                                     <h5>Nama Lengkap</h5>
                                     <div class="sign__input">
                                         <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama Lengkap">
                                         <i class="fal fa-envelope"></i>
                                     </div>
                                 </div>
-                                <div class="sign__input-wrapper mb-25">
+                                <div class="sign__input-wrapper mb-25" id="nik">
                                     <h5>NIK</h5>
                                     <div class="sign__input">
                                         <input type="number" name="nik" value="{{ old('nik') }}" placeholder="NIK">
@@ -75,17 +86,6 @@
                                         <i class="fal fa-lock"></i>
                                     </div>
                                 </div>
-                                <div class="sign__input-wrapper mb-25">
-                                    <h5>Sebagai</h5>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" id="role1" name="role" value="Kandidat" checked>Kandidat
-                                        <label class="form-check-label" for="role1"></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" id="role2" name="role" value="Perusahaan">Perusahaan
-                                        <label class="form-check-label" for="role2"></label>
-                                    </div>
-                                </div>
                                 <div class="sign__action d-sm-flex justify-content-between mb-30">
                                     <div class="sign__agree d-flex align-items-center">
                                         <input class="m-check-input" type="checkbox" id="m-agree" name="remember">
@@ -98,6 +98,20 @@
                                     <p>Sudah memiliki akun? <a href="{{ route('login') }}">Login disini!</a></p>
                                 </div>
                             </form>
+
+                            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                            <script>
+                                $(document).ready(function() {
+                                    $('input[name="role"]').change(function() {
+                                        if ($(this).val() === 'Kandidat') {
+                                            $('#nik').show();
+                                        } else {
+                                            $('#nik').hide();
+                                        }
+                                    });
+                                });
+                            </script>
+
                         </div>
 
                     </div>

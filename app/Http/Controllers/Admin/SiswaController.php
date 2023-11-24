@@ -16,9 +16,9 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        $toptitle = 'Daftar Siswa';
-        $title = 'Siswa';
-        $subtitle = 'Data Siswa';
+        $toptitle = 'Daftar Peserta';
+        $title = 'Peserta';
+        $subtitle = 'Data Peserta';
 
         $hasilPelatihanTerakhir = HasilPelatihanModel::select(DB::raw('MAX(id) as id'))
             ->groupBy('id_user')

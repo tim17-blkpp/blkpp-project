@@ -44,6 +44,7 @@ class PelatihanController extends Controller
             'id_jpl' => 'required',
             'judul' => 'required',
             'deskripsi' => 'required',
+            'gambar' => 'image|mimes:jpeg,png,jpg|max:500|dimensions:min_width=1000,min_height=500,max_width=1000,max_height=500',
         ]);
 
         $gambar = "";
@@ -64,7 +65,7 @@ class PelatihanController extends Controller
             'gambar' => $gambar,
             'deskripsi' => $request->deskripsi,
             'dilihat' => 0,
-            'status' => 1,
+            'status' => $request->sts,
         ]);
 
         return redirect()->route('pelatihan.index')->with(['success' => 'Data Berhasil Disimpan']);
@@ -110,6 +111,9 @@ class PelatihanController extends Controller
         $gambar = $data_edit->gambar;
 
         if ($request->hasFile('gambar')) {
+            $request->validate([
+                'gambar' => 'image|mimes:jpeg,png,jpg|max:500|dimensions:min_width=1000,min_height=500,max_width=1000,max_height=500',
+            ]);
             $file = $request->file('gambar');
             $fileName = auth()->user()->id . time() . uniqid() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path() . '/berkas';
@@ -126,7 +130,7 @@ class PelatihanController extends Controller
         $dataUp['judul'] = $request->judul;
         $dataUp['gambar'] = $gambar;
         $dataUp['deskripsi'] = $request->deskripsi;
-        $dataUp['status'] = 1;
+        $dataUp['status'] = $request->sts;
 
         $data_edit->update($dataUp);
         return redirect()->route('pelatihan.index')->with(['success' => 'Data Berhasil Disimpan']);

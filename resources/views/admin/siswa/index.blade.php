@@ -66,7 +66,9 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if($dt->pelatihan != null)
                                     {{ $dt->pelatihan->judul }}
+                                    @endif
                                 </td>
 
                             </tr>

@@ -18,7 +18,9 @@ class PelatihanUserController extends Controller
         $kata_kunci = null;
         $kategori = KategoriPelatihanModel::all();
 
-        $query = PelatihanModel::with('kategori')->orderBy('id', 'DESC');
+        $query = PelatihanModel::with('kategori')
+            ->where('status', 1)
+            ->orderBy('id', 'DESC');
 
         // Filter berdasarkan judul blog
         if ($request->has('kata_kunci')) {
@@ -38,6 +40,7 @@ class PelatihanUserController extends Controller
         ]);
 
         $terbaru = PelatihanModel::with('kategori')
+            ->where('status', 1)
             ->orderBy('id', 'DESC')
             ->take(5)
             ->get();
@@ -63,7 +66,9 @@ class PelatihanUserController extends Controller
 
         $detail = PelatihanModel::with('kategori')
             ->with('jpl')
-            ->with('sesi')
+            ->with(['sesi' => function ($query) {
+                $query->where('status', 1);
+            }])
             ->where('id', $request->id)
             ->first();
 
@@ -78,11 +83,13 @@ class PelatihanUserController extends Controller
         $kategori = KategoriPelatihanModel::all();
 
         $terbaru = PelatihanModel::with('kategori')
+            ->where('status', 1)
             ->orderBy('id', 'DESC')
             ->take(5)
             ->get();
 
         $sesuai = PelatihanModel::with('kategori')
+            ->where('status', 1)
             ->where('id_kategori', $detail->id_kategori)
             ->orderBy('id', 'DESC')
             ->take(2)

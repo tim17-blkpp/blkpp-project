@@ -17,7 +17,11 @@ class LowonganKerjaController extends Controller
         $title = 'Lowongan Kerja';
         $subtitle = 'Data Lowongan Kerja';
 
-        $all_data = LowonganKerjaModel::with('kategori')->orderBy('id', 'DESC')->get();
+        if (auth()->user()->role == 'Perusahaan') {
+            $all_data = LowonganKerjaModel::with('kategori')->where('id_perusahaan', auth()->user()->id)->orderBy('id', 'DESC')->get();
+        } else {
+            $all_data = LowonganKerjaModel::with('kategori')->orderBy('id', 'DESC')->get();
+        }
         $kategori = KategoriLowonganKerjaModel::orderBy('id', 'DESC')->get();
 
         return view('admin.lowongan_kerja.index', compact(
@@ -43,9 +47,15 @@ class LowonganKerjaController extends Controller
             'gaji_max' => 'required',
             'tipe_pekerjaan' => 'required',
             'deskripsi' => 'required',
+            'gambar' => 'image|mimes:jpeg,png,jpg|max:500|dimensions:min_width=1000,min_height=500,max_width=1000,max_height=500',
         ]);
 
         $gambar = "";
+        $id_perusahaan = null;
+
+        if (auth()->user()->role == 'Perusahaan') {
+            $id_perusahaan = auth()->user()->id;
+        }
 
         if ($request->hasFile('gambar')) {
 
@@ -57,6 +67,7 @@ class LowonganKerjaController extends Controller
         }
 
         $data_input = LowonganKerjaModel::create([
+            'id_perusahaan' => $id_perusahaan,
             'id_kategori' => $request->id_kategori,
             'judul' => $request->judul,
             'gaji_min' => $request->gaji_min,
@@ -113,6 +124,9 @@ class LowonganKerjaController extends Controller
         $gambar = $data_edit->gambar;
 
         if ($request->hasFile('gambar')) {
+            $request->validate([
+                'gambar' => 'image|mimes:jpeg,png,jpg|max:500|dimensions:min_width=1000,min_height=500,max_width=1000,max_height=500',
+            ]);
             $file = $request->file('gambar');
             $fileName = auth()->user()->id . time() . uniqid() . '.' . $file->getClientOriginalExtension();
             $destinationPath = public_path() . '/berkas';
