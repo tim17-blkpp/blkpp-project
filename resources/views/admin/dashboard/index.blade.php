@@ -14,12 +14,12 @@
         </div>
         <div class="dropdown col d-flex">
             <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Jenis Anggaran
+                Kategori
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                @foreach($kategori as $data)
+                    <li><a class="dropdown-item" href="#">{{ $data->nama}}</a></li>
+                @endforeach
             </ul>
         </div>
         <div class="dropdown col d-flex">
@@ -27,24 +27,14 @@
                 Pelatihan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                @foreach($pelatihan as $data)
+                    <li><a class="dropdown-item" href="#">{{ $data->judul}}</a></li>
+                @endforeach
             </ul>
         </div>
         <div class="dropdown col d-flex">
             <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Kejuruan
-            </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-        </div>
-        <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Angkatan
+                Jenis Pelatihan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
                 <li><a class="dropdown-item" href="#">Action</a></li>
@@ -62,19 +52,19 @@
     </div>
     
     <div class="row mb-2">
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;" >
+        <div class="col bg-light" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;" >
             <canvas id="barKelamin" style="max-width: 100%;"></canvas>
         </div>
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
+        <div class="col bg-light" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
             <canvas id="kompetensi" style=" max-width: 100%;"></canvas>
         </div>
     </div>
 
     <div class="row mb-2">
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
+        <div class="col bg-light" style="text-align: center; margin: 10px; border-radius: 10px;">
             <canvas id="barAnggaran" style="max-width: 100%;"></canvas>
         </div>
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
+        <div class="col bg-light" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
             <canvas id="pendidikan" style=" max-width: 100%;"></canvas>
         </div>
     </div>
@@ -169,8 +159,8 @@
             data: {
                 labels: xValues,
                 datasets: [{
-                backgroundColor: barColors,
-                data: yValues
+                    backgroundColor: barColors,
+                    data: yValues
                 }]
             },
             options: {
@@ -181,10 +171,10 @@
                 },
                 legend: {
                     display: true,
-                    position: 'bottom' // Set the legend position to 'bottom'
-                }
+                    position: 'bottom'
+                },
             }
-            });
+        });
             
             new Chart("pendidikan", {
             type: "doughnut",
@@ -198,7 +188,7 @@
             options: {
                 title: {
                     display: true,
-                    text: "Anggaran",
+                    text: "Pendidikan",
                     fontSize: 18
                 },
                 legend: {
@@ -273,8 +263,12 @@
                         legend: {
                             position: 'top',
                         }
+                    }, title: {
+                    display: true,
+                    text: "Usia Berdasarkan Kelamin",
+                    fontSize: 18
                     },
-                }
+                },
             });
         })
 

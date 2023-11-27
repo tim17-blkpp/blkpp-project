@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\DashboardResource;
 use App\Models\DeviceModel;
 use App\Models\ProfilModel;
+use App\Models\PelatihanModel;
+use App\Models\KategoriPelatihanModel;
+use App\Models\SesiPelatihanModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -24,6 +27,9 @@ class DashboardController extends Controller
         $toptitle = 'Dashboard';
         $title = 'Dashboard';
         $subtitle = 'Data Dashboard';
+        $kategori = KategoriPelatihanModel::all();
+        $pelatihan = PelatihanModel::all();
+        $sesi_pelatihan = SesiPelatihanModel::all();
 
         $filter = $request->input('filter', 'hari_ini');
 
@@ -32,6 +38,9 @@ class DashboardController extends Controller
             'title',
             'subtitle',
             'filter',
+            'kategori',
+            'pelatihan',
+            'sesi_pelatihan'
         ));
     }
 
@@ -55,7 +64,7 @@ class DashboardController extends Controller
                 'total_siswa' => $total_siswa,
                 'count_laki' => $count_laki,
                 'count_perempuan' => $count_perempuan,
-                'avg_umur' => $avg_umur,
+                'avg_umur' => $avg_umur
                 ]
             ], 200);
         // if ($login) {
