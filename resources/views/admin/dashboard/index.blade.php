@@ -90,16 +90,8 @@
                     <th scope="col">Pelatihan</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php for ($i = 0; $i < 10; $i++) { ?>
-                    <tr>
-                        <td>2021</td>
-                        <td>APBD</td>
-                        <td>1</td>
-                        <td>Desain Grafis</td>
-                        <td>MTU</td>
-                    </tr>
-                <?php } ?>
+            <tbody id='pelatihanTable'>
+                <!-- Nanti data pelatihan masuk sini -->
             </tbody>
         </table>
     </div>
@@ -117,31 +109,46 @@
             tahunDropdown.appendChild(option);
         }
 
+        // Variabel buat nampung query API
+        var query_tahun = null;
+        var query_anggaran = null;
+        var query_pelatihan = null;
+        var query_kejuruan = null;
+        var query_angkatan = null;
+
         tahunDropdown.addEventListener('click', function (event) {
             // Mendapatkan nilai tahun yang dipilih
             var selectedYear = event.target.textContent;
+            query_tahun = selectedYear;
 
             // Memanggil fungsi untuk mengubah chart berdasarkan tahun yang dipilih
-            updateChart(selectedYear);
+            fetchStatistik();
+            fetchDataPelatihan(query_tahun, query_anggaran, query_pelatihan, query_kejuruan, query_angkatan);
         });
 
-        // mendapatkan token API yang sudah dibuat saat login
-        let token = "{{ Session::get('token') }}";
+        function fetchStatistik() {
+            // mendapatkan token API yang sudah dibuat saat login
+            let token = "{{ Session::get('token') }}";
 
-        // fetch data dari API
-        fetch('/api/get-statistik', {
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Extract the data object
-            var stats = data.data;
-            console.log(data.data);
+            // fetch data dari API
+            fetch('/api/get-statistik', {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Extract the data object
+                var stats = data.data;
+                // console.log(data.data);
+                updateChart(stats);
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
+        function updateChart(stats) {
             const totalLaki = 19;
             const totalPerempuan = 11;
             const rataUmur = 35;
@@ -276,11 +283,58 @@
                     },
                 }
             });
-        })
+        }
 
+        function fetchDataPelatihan(tahun = null, anggaran = null, pelatihan = null, kejuruan = null, angkatan = null) {
+            let token = "{{ Session::get('token') }}";
 
-        .catch(error => console.error('Error:', error));
+            // to do coming soon
+            var apiUrl = '/api/data-pelatihan?';
+            if (tahun != null) {
+                apiUrl += 'tahun=' + tahun + '&';
+            }
 
+            // fetch data dari API
+            fetch(apiUrl, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Extract the data object
+                var result = data.data;
+                updatePelatihanTable(result);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function updatePelatihanTable(data) {
+            var table = document.getElementById("pelatihanTable");
+            table.innerHTML = "";
+            // console.log("menampilkan data pelatihan ke tabel");
+            // console.log(data);
+            for (var i = 0; i < data.length; i++) {
+                var row = table.insertRow(i);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = data[i].tahun;
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = data[i].anggaran;
+                var cell3 = row.insertCell(2);
+                cell3.innerHTML = data[i].angkatan;
+                var cell4 = row.insertCell(3);
+                cell4.innerHTML = data[i].kejuruan;
+                var cell5 = row.insertCell(4);
+                cell5.innerHTML = data[i].pelatihan;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchStatistik();
+            fetchDataPelatihan();
+        });
 
       </script>
 

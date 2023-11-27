@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DashboardResource;
+use App\Http\Resources\PelatihanResource;
+use App\Http\Resources\SesiPelatihanResource;
 use App\Models\DeviceModel;
+use App\Models\PelatihanModel;
 use App\Models\ProfilModel;
+use App\Models\SesiPelatihanModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -35,6 +39,47 @@ class DashboardController extends Controller
         ));
     }
 
+    public function getDataPelatihan(Request $request) {
+        $tahun = $request->input('tahun');
+        $anggaran = $request->input('anggaran');
+        $angkatan = $request->input('angkatan');
+        $kejuruan = $request->input('kejuruan');
+        $pelatihan = $request->input('pelatihan');
+
+        $query = SesiPelatihanModel::with('pelatihan');
+        if ($tahun) {
+            $query->whereHas('pelatihan.jpl', function($q) use ($tahun) {
+                $q->where('tahun', $tahun);
+            });
+        }
+        if ($anggaran) {
+            $query->whereHas('pelatihan.jpl', function($q) use ($anggaran) {
+                $q->where('anggaran', $anggaran);
+            });
+        }
+        if ($angkatan) {
+            $query->where('angkatan', $angkatan);
+        }
+        if ($kejuruan) {
+            $query->whereHas('pelatihan', function($q) use ($kejuruan) {
+                $q->where('judul', 'like', '%'.$kejuruan.'%');
+            });
+        }
+        if ($pelatihan) {
+            $query->whereHas('pelatihan.jpl', function($q) use ($pelatihan) {
+                $q->where('pelatihan', 'like', '%'.$pelatihan.'%');
+            });
+        }
+        $query = $query->get();
+
+        $all_sesi = SesiPelatihanModel::with('pelatihan')->get();
+        return response()->json([
+            'response_code' => 200,
+            'message' => 'success',
+            'data' => SesiPelatihanResource::collection($query)
+        ], 200);
+    }
+
     public function getStatistik(Request $request) {
         $kandidat = User::where('role', 'Kandidat')->get();
         $total_siswa = $kandidat->count();
@@ -54,7 +99,7 @@ class DashboardController extends Controller
 
         return response()->json([
             'response_code' => 200,
-            'message' => 'sucess',
+            'message' => 'success',
             'data' => [
                 'total_siswa' => $total_siswa,
                 'count_laki' => $count_lk,
@@ -62,24 +107,6 @@ class DashboardController extends Controller
                 'avg_umur' => $avg_umur,
                 ]
             ], 200);
-        // if ($login) {
-        //     if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Admin') {
-        //         return response()->json([
-        //             'response_code' => 200,
-        //             'message' => 'sucess',
-        //             'data' => [
-        //                 'total_siswa' => $total_siswa,
-        //                 'count_laki' => $count_laki,
-        //                 'count_perempuan' => $count_perempuan,
-        //                 'avg_umur' => $avg_umur,
-        //             ]
-        //         ]);
-        //     }
-        // }
-        // return response()->json([
-        //     'response_code' => 403,
-        //     'message' => Auth::user()->can('show:statistic')
-        // ])->setStatusCode(403);
     }
 
     /**

@@ -34,3 +34,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum', 'checkRole:Super Admin,Admin')->group(function () {
     Route::get('/get-statistik', [DashboardController::class, 'getStatistik']);
 });
+
+Route::get('/data-pelatihan', [DashboardController::class, 'getDataPelatihan']);
