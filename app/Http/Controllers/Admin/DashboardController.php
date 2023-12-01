@@ -10,6 +10,7 @@ use App\Models\DeviceModel;
 use App\Models\PelatihanModel;
 use App\Models\ProfilModel;
 use App\Models\SesiPelatihanModel;
+use App\Models\KategoriPelatihanModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -28,6 +29,9 @@ class DashboardController extends Controller
         $toptitle = 'Dashboard';
         $title = 'Dashboard';
         $subtitle = 'Data Dashboard';
+        $kategori = KategoriPelatihanModel::all();
+        $pelatihan = PelatihanModel::all();
+        $sesipelatihan = SesiPelatihanModel::all();
 
         $filter = $request->input('filter', 'hari_ini');
 
@@ -36,6 +40,9 @@ class DashboardController extends Controller
             'title',
             'subtitle',
             'filter',
+            'kategori',
+            'pelatihan',
+            'sesipelatihan'
         ));
     }
 
