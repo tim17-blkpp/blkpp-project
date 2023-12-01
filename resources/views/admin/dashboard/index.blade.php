@@ -9,12 +9,12 @@
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdown">
-                <!-- Opsi dropdown -->
+
             </ul>
         </div>
         <div class="dropdown col d-flex">
             <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Jenis Anggaran
+                Kategori
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
                 <li><a class="dropdown-item" href="#">APBN</a></li>
@@ -205,7 +205,7 @@
             options: {
                 title: {
                     display: true,
-                    text: "Anggaran",
+                    text: "Pendidikan",
                     fontSize: 18
                 },
                 legend: {
@@ -219,28 +219,56 @@
             const valueAnggaranY = [450, 1100, 1500, 1600];
 
             new Chart("barAnggaran", {
-            type: "bar",
+            type: "line",
             data: {
-                labels: valueAnggaranX,
-                datasets: [{
-                backgroundColor: "#FBC816",
-                data: valueAnggaranY,
-                label: "Anggaran"
-                }]
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                datasets: [
+                {
+                    label: "APBN",
+                    borderColor: "rgb(75, 192, 192)",
+                    data: [10, 25, 30, 45, 50, 60],
+                    fill: false,
+                },
+                {
+                    label: "DPD",
+                    borderColor: "rgb(255, 0, 0)",
+                    data: [20, 35, 40, 55, 60, 70], // Ganti data ini sesuai kebutuhan Anda
+                    fill: false,
+                },
+                {
+                    label: "APBN",
+                    borderColor: "rgb(255, 65, 0)",
+                    data: [15, 30, 20, 35, 10, 50], // Ganti data ini sesuai kebutuhan Anda
+                    fill: false,
+                },
+                ],
             },
             options: {
-                title: {
-                display: true,
-                text: "Total Anggaran per Tahun",
-                fontSize: 18
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                x: {
+                    type: 'category',
+                    labels: {
+                    rotate: 45,
+                    }
+                },
+                y: {
+                    beginAtZero: true
                 }
+                },
+                title: {
+                    display: true,
+                    text: "Jenis Aggaran",
+                    fontSize: 18
+                },
             },
             });
 
             // Data for two datasets
-            const dataset1 = [30, 45, 40, 35];
-            const dataset2 = [20, 25, 45, 30];
-            const labels = ["100", "200", "300", "400"];
+            const dataset1 = [130, 145, 140, 135];
+            const dataset2 = [120, 115, 145, 130];
+            const labels = ["20", "35", "40", "45"];
 
             // Create the bar chart
             const ctx = document.getElementById("barKelamin").getContext("2d");
@@ -270,10 +298,10 @@
                     maintainAspectRatio: false,
                     scales: {
                         x: {
-                            stacked: true // If you want bars to be stacked horizontally
+                            stacked: true
                         },
                         y: {
-                            stacked: true // If you want bars to be stacked vertically
+                            stacked: true,
                         }
                     },
                     plugins: {
@@ -281,15 +309,15 @@
                             position: 'top',
                         }
                     },
+                    title: {
+                        display: true,
+                        text: "Jenis Kelamin",
+                        fontSize: 18
+                    },
                     legend: {
-                    display: true,
-                    position: 'top' // Set the legend position to 'bottom'
-                },
-                title: {
-                display: true,
-                text: "Total Anggaran per Tahun",
-                fontSize: 18
-                }
+                        display: true,
+                        position: 'top' // Set the legend position to 'bottom'
+                    }
                 }
             });
         }
