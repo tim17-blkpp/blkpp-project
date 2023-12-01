@@ -18,8 +18,8 @@ class SesiPelatihanResource extends JsonResource
             'tahun' => $this->pelatihan->jpl->tahun,
             'anggaran' => $this->pelatihan->jpl->anggaran,
             'angkatan' => $this->angkatan,
-            'kejuruan' => $this->pelatihan->judul,
-            'pelatihan' => $this->pelatihan->jpl->pelatihan,
+            'kategori' => $this->pelatihan->kategori->nama,
+            'pelatihan' => $this->pelatihan->judul,
         ];
     }
 }

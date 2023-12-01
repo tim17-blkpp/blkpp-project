@@ -17,9 +17,19 @@
                 Jenis Anggaran
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="#">APBN</a></li>
+                <li><a class="dropdown-item" href="#">APBD</a></li>
+                <li><a class="dropdown-item" href="#">APBN Covid</a></li>
+            </ul>
+        </div>
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Kategori
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+                @foreach($kategori as $data)
+                    <li><a class="dropdown-item" href="#">{{ $data->nama}}</a></li>
+                @endforeach
             </ul>
         </div>
         <div class="dropdown col d-flex">
@@ -27,19 +37,9 @@
                 Pelatihan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-        </div>
-        <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Kejuruan
-            </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                @foreach($pelatihan as $data)
+                    <li><a class="dropdown-item" href="#">{{ $data->judul}}</a></li>
+                @endforeach
             </ul>
         </div>
         <div class="dropdown col d-flex">
@@ -47,9 +47,9 @@
                 Angkatan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                @foreach($angkatan as $data)
+                    <li><a class="dropdown-item" href="#">Angkatan {{ $data->angkatan }}</a></li>
+                @endforeach
             </ul>
         </div>
     </div>
@@ -86,7 +86,7 @@
                     <th scope="col">Tahun</th>
                     <th scope="col">Dukungan Anggaran</th>
                     <th scope="col">Angkatan</th>
-                    <th scope="col">Kejuruan</th>
+                    <th scope="col">Kategori</th>
                     <th scope="col">Pelatihan</th>
                 </tr>
             </thead>
@@ -113,7 +113,7 @@
         var query_tahun = null;
         var query_anggaran = null;
         var query_pelatihan = null;
-        var query_kejuruan = null;
+        var query_kategori = null;
         var query_angkatan = null;
 
         tahunDropdown.addEventListener('click', function (event) {
@@ -123,7 +123,7 @@
 
             // Memanggil fungsi untuk mengubah chart berdasarkan tahun yang dipilih
             fetchStatistik();
-            fetchDataPelatihan(query_tahun, query_anggaran, query_pelatihan, query_kejuruan, query_angkatan);
+            fetchDataPelatihan(query_tahun, query_anggaran, query_pelatihan, query_kategori, query_angkatan);
         });
 
         function fetchStatistik() {
@@ -281,11 +281,20 @@
                             position: 'top',
                         }
                     },
+                    legend: {
+                    display: true,
+                    position: 'top' // Set the legend position to 'bottom'
+                },
+                title: {
+                display: true,
+                text: "Total Anggaran per Tahun",
+                fontSize: 18
+                }
                 }
             });
         }
 
-        function fetchDataPelatihan(tahun = null, anggaran = null, pelatihan = null, kejuruan = null, angkatan = null) {
+        function fetchDataPelatihan(tahun = null, anggaran = null, pelatihan = null, kategori = null, angkatan = null) {
             let token = "{{ Session::get('token') }}";
 
             // to do coming soon
@@ -325,7 +334,7 @@
                 var cell3 = row.insertCell(2);
                 cell3.innerHTML = data[i].angkatan;
                 var cell4 = row.insertCell(3);
-                cell4.innerHTML = data[i].kejuruan;
+                cell4.innerHTML = data[i].kategori;
                 var cell5 = row.insertCell(4);
                 cell5.innerHTML = data[i].pelatihan;
             }

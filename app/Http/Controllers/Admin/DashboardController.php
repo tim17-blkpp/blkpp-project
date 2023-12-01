@@ -7,6 +7,7 @@ use App\Http\Resources\DashboardResource;
 use App\Http\Resources\PelatihanResource;
 use App\Http\Resources\SesiPelatihanResource;
 use App\Models\DeviceModel;
+use App\Models\KategoriPelatihanModel;
 use App\Models\PelatihanModel;
 use App\Models\ProfilModel;
 use App\Models\SesiPelatihanModel;
@@ -28,6 +29,10 @@ class DashboardController extends Controller
         $toptitle = 'Dashboard';
         $title = 'Dashboard';
         $subtitle = 'Data Dashboard';
+        $kategori = KategoriPelatihanModel::all();
+        $pelatihan = PelatihanModel::all();
+        $sesi_pelatihan = SesiPelatihanModel::all();
+        $angkatan = SesiPelatihanModel::select('angkatan')->distinct()->get();
 
         $filter = $request->input('filter', 'hari_ini');
 
@@ -36,6 +41,10 @@ class DashboardController extends Controller
             'title',
             'subtitle',
             'filter',
+            'kategori',
+            'pelatihan',
+            'sesi_pelatihan',
+            'angkatan'
         ));
     }
 
@@ -43,7 +52,7 @@ class DashboardController extends Controller
         $tahun = $request->input('tahun');
         $anggaran = $request->input('anggaran');
         $angkatan = $request->input('angkatan');
-        $kejuruan = $request->input('kejuruan');
+        $kategori = $request->input('kategori');
         $pelatihan = $request->input('pelatihan');
 
         $query = SesiPelatihanModel::with('pelatihan');
@@ -60,14 +69,14 @@ class DashboardController extends Controller
         if ($angkatan) {
             $query->where('angkatan', $angkatan);
         }
-        if ($kejuruan) {
-            $query->whereHas('pelatihan', function($q) use ($kejuruan) {
-                $q->where('judul', 'like', '%'.$kejuruan.'%');
+        if ($kategori) {
+            $query->whereHas('pelatihan.kategori', function($q) use ($kategori) {
+                $q->where('nama', 'like', '%'.$kategori.'%');
             });
         }
         if ($pelatihan) {
-            $query->whereHas('pelatihan.jpl', function($q) use ($pelatihan) {
-                $q->where('pelatihan', 'like', '%'.$pelatihan.'%');
+            $query->whereHas('pelatihan', function($q) use ($pelatihan) {
+                $q->where('judul', 'like', '%'.$pelatihan.'%');
             });
         }
         $query = $query->get();
@@ -96,6 +105,12 @@ class DashboardController extends Controller
                     ->whereIn('users.id', $kandidat->pluck('id'))
                     ->avg(DB::raw('YEAR(CURDATE()) - YEAR(tanggal_lahir)'))
                     , 2);
+
+        // TO DO
+        // count masing-masing laki & perempuan per tahun
+        // count jumlah siswa kompeten & tidak kompeten
+        // count perbandingan jumlah siswa dengan anggaran APBN, APBD, dll
+        // chart pendidikan tertinggi siswa
 
         return response()->json([
             'response_code' => 200,
