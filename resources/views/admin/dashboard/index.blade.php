@@ -4,49 +4,54 @@
 <div>
     <div class="row mb-2">
         <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Tahun
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="tahunDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Tahun
                 <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdownMenu">
+                <li><a class="dropdown-item" href="#">Semua Tahun</a></li>
 
             </ul>
         </div>
         <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Jenis Anggaran
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="anggaranDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Anggaran
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="anggaranDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="anggaranDropdownMenu">
+                <li><a class="dropdown-item" href="#">Semua Anggaran</a></li>
                 <li><a class="dropdown-item" href="#">APBN</a></li>
                 <li><a class="dropdown-item" href="#">APBD</a></li>
                 <li><a class="dropdown-item" href="#">APBN Covid</a></li>
             </ul>
         </div>
         <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Kategori
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="kategoriDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Kategori
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="kategoriDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="kategoriDropdownMenu">
+                <li><a class="dropdown-item" href="#">Semua Kategori</a></li>
                 @foreach($kategori as $data)
                     <li><a class="dropdown-item" href="#">{{ $data->nama}}</a></li>
                 @endforeach
             </ul>
         </div>
         <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Pelatihan
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="pelatihanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Pelatihan
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdownMenu">
+                <li><a class="dropdown-item" href="#">Semua Pelatihan</a></li>
                 @foreach($pelatihan as $data)
                     <li><a class="dropdown-item" href="#">{{ $data->judul}}</a></li>
                 @endforeach
             </ul>
         </div>
         <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Angkatan
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="angkatanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Angkatan
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdownMenu">
+                <li><a class="dropdown-item" href="#">Semua Angkatan</a></li>
                 @foreach($angkatan as $data)
                     <li><a class="dropdown-item" href="#">Angkatan {{ $data->angkatan }}</a></li>
                 @endforeach
@@ -97,11 +102,11 @@
     </div>
       <script>
         // Mendapatkan elemen dropdown tahun
-        var tahunDropdown = document.getElementById("tahunDropdown");
-        var anggaranDropdown = document.getElementById("anggaranDropdown");
-        var kategoriDropdown = document.getElementById("kategoriDropdown");
-        var pelatihanDropdown = document.getElementById("pelatihanDropdown");
-        var angkatanDropdown = document.getElementById("angkatanDropdown");
+        var tahunDropdown = document.getElementById("tahunDropdownMenu");
+        var anggaranDropdown = document.getElementById("anggaranDropdownMenu");
+        var kategoriDropdown = document.getElementById("kategoriDropdownMenu");
+        var pelatihanDropdown = document.getElementById("pelatihanDropdownMenu");
+        var angkatanDropdown = document.getElementById("angkatanDropdownMenu");
 
         // Mendapatkan tahun ini
         var tahunSekarang = new Date().getFullYear();
@@ -293,7 +298,7 @@
                 },
                 title: {
                     display: true,
-                    text: "Jenis Aggaran",
+                    text: "Jenis Anggaran",
                     fontSize: 18
                 },
             },
@@ -361,19 +366,19 @@
 
             // to do coming soon
             var apiUrl = '/api/data-pelatihan?';
-            if (tahun != null) {
+            if (tahun != null && tahun != "Semua Tahun") {
                 apiUrl += 'tahun=' + tahun + '&';
             }
-            if (anggaran != null) {
+            if (anggaran != null && anggaran != "Semua Anggaran") {
                 apiUrl += 'anggaran=' + anggaran + '&';
             }
-            if (kategori != null) {
+            if (kategori != null && kategori != "Semua Kategori") {
                 apiUrl += 'kategori=' + kategori + '&';
             }
-            if (pelatihan != null) {
+            if (pelatihan != null && pelatihan != "Semua Pelatihan") {
                 apiUrl += 'pelatihan=' + pelatihan + '&';
             }
-            if (angkatan != null) {
+            if (angkatan != null && angkatan != "Semua Angkatan") {
                 apiUrl += 'angkatan=' + angkatan + '&';
             }
 
@@ -419,6 +424,57 @@
             fetchDataPelatihan();
         });
 
+        document.addEventListener('DOMContentLoaded', function () {
+            var kategoriDropdown = new bootstrap.Dropdown(document.getElementById('kategoriDropdown'));
+            var kategoriItems = document.querySelectorAll('#kategoriDropdownMenu a.dropdown-item');
+
+            kategoriItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var selectedText = this.textContent.trim();
+                    document.getElementById('kategoriDropdown').textContent = selectedText;
+                });
+            });
+
+            var tahunDropdown = new bootstrap.Dropdown(document.getElementById('tahunDropdown'));
+            var tahunItems = document.querySelectorAll('#tahunDropdownMenu a.dropdown-item');
+
+            tahunItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var selectedText = this.textContent.trim();
+                    document.getElementById('tahunDropdown').textContent = selectedText;
+                });
+            });
+
+            var pelatihanDropdown = new bootstrap.Dropdown(document.getElementById('pelatihanDropdown'));
+            var pelatihanItems = document.querySelectorAll('#pelatihanDropdownMenu a.dropdown-item');
+
+            pelatihanItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var selectedText = this.textContent.trim();
+                    document.getElementById('pelatihanDropdown').textContent = selectedText;
+                });
+            });
+
+            var anggaranDropdown = new bootstrap.Dropdown(document.getElementById('anggaranDropdown'));
+            var anggaranItems = document.querySelectorAll('#anggaranDropdownMenu a.dropdown-item');
+
+            anggaranItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var selectedText = this.textContent.trim();
+                    document.getElementById('anggaranDropdown').textContent = selectedText;
+                });
+            });
+
+            var angkatanDropdown = new bootstrap.Dropdown(document.getElementById('angkatanDropdown'));
+            var angkatanItems = document.querySelectorAll('#angkatanDropdownMenu a.dropdown-item');
+
+            angkatanItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    var selectedText = this.textContent.trim();
+                    document.getElementById('angkatanDropdown').textContent = selectedText;
+                });
+            });
+        });
       </script>
 
 @endsection
