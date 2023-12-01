@@ -14,9 +14,9 @@
         </div>
         <div class="dropdown col d-flex">
             <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                Kategori
+                Jenis Anggaran
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="anggaranDropdown">
                 <li><a class="dropdown-item" href="#">APBN</a></li>
                 <li><a class="dropdown-item" href="#">APBD</a></li>
                 <li><a class="dropdown-item" href="#">APBN Covid</a></li>
@@ -26,7 +26,7 @@
             <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Kategori
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="kategoriDropdown">
                 @foreach($kategori as $data)
                     <li><a class="dropdown-item" href="#">{{ $data->nama}}</a></li>
                 @endforeach
@@ -36,7 +36,7 @@
             <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Pelatihan
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdown">
                 @foreach($pelatihan as $data)
                     <li><a class="dropdown-item" href="#">{{ $data->judul}}</a></li>
                 @endforeach
@@ -46,7 +46,7 @@
             <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 Angkatan
             </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink">
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdown">
                 @foreach($angkatan as $data)
                     <li><a class="dropdown-item" href="#">Angkatan {{ $data->angkatan }}</a></li>
                 @endforeach
@@ -98,6 +98,10 @@
       <script>
         // Mendapatkan elemen dropdown tahun
         var tahunDropdown = document.getElementById("tahunDropdown");
+        var anggaranDropdown = document.getElementById("anggaranDropdown");
+        var kategoriDropdown = document.getElementById("kategoriDropdown");
+        var pelatihanDropdown = document.getElementById("pelatihanDropdown");
+        var angkatanDropdown = document.getElementById("angkatanDropdown");
 
         // Mendapatkan tahun ini
         var tahunSekarang = new Date().getFullYear();
@@ -112,8 +116,8 @@
         // Variabel buat nampung query API
         var query_tahun = null;
         var query_anggaran = null;
-        var query_pelatihan = null;
         var query_kategori = null;
+        var query_pelatihan = null;
         var query_angkatan = null;
 
         tahunDropdown.addEventListener('click', function (event) {
@@ -123,7 +127,37 @@
 
             // Memanggil fungsi untuk mengubah chart berdasarkan tahun yang dipilih
             fetchStatistik();
-            fetchDataPelatihan(query_tahun, query_anggaran, query_pelatihan, query_kategori, query_angkatan);
+            fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
+        });
+        anggaranDropdown.addEventListener('click', function (event) {
+            var selectedAnggaran = event.target.textContent;
+            query_anggaran = selectedAnggaran;
+
+            console.log(query_anggaran);
+
+            fetchStatistik();
+            fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
+        });
+        kategoriDropdown.addEventListener('click', function (event) {
+            var selectedKategori = event.target.textContent;
+            query_kategori = selectedKategori;
+
+            fetchStatistik();
+            fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
+        });
+        pelatihanDropdown.addEventListener('click', function (event) {
+            var selectedPelatihan = event.target.textContent;
+            query_pelatihan = selectedPelatihan;
+
+            fetchStatistik();
+            fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
+        });
+        angkatanDropdown.addEventListener('click', function (event) {
+            var selectedAngkatan = event.target.textContent;
+            query_angkatan = selectedAngkatan;
+
+            fetchStatistik();
+            fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
         });
 
         function fetchStatistik() {
@@ -322,13 +356,25 @@
             });
         }
 
-        function fetchDataPelatihan(tahun = null, anggaran = null, pelatihan = null, kategori = null, angkatan = null) {
+        function fetchDataPelatihan(tahun = null, anggaran = null, kategori = null, pelatihan = null, angkatan = null) {
             let token = "{{ Session::get('token') }}";
 
             // to do coming soon
             var apiUrl = '/api/data-pelatihan?';
             if (tahun != null) {
                 apiUrl += 'tahun=' + tahun + '&';
+            }
+            if (anggaran != null) {
+                apiUrl += 'anggaran=' + anggaran + '&';
+            }
+            if (kategori != null) {
+                apiUrl += 'kategori=' + kategori + '&';
+            }
+            if (pelatihan != null) {
+                apiUrl += 'pelatihan=' + pelatihan + '&';
+            }
+            if (angkatan != null) {
+                apiUrl += 'angkatan=' + angkatan + '&';
             }
 
             // fetch data dari API
