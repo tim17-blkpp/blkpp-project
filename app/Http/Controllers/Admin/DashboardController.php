@@ -7,6 +7,7 @@ use App\Http\Resources\DashboardResource;
 use App\Http\Resources\PelatihanResource;
 use App\Http\Resources\SesiPelatihanResource;
 use App\Models\DeviceModel;
+use App\Models\HasilPelatihanModel;
 use App\Models\PelatihanModel;
 use App\Models\ProfilModel;
 use App\Models\SesiPelatihanModel;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class DashboardController extends Controller
 {
@@ -89,22 +91,262 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    public function getDataUmur(Request $request) {
+        $umurRanges = ['17-20', '21-30', '31-40', '41-50', '51-60', '61-100'];
+        $total = 0;
+        $data = [];
+
+        $tahun = $request->input('tahun');
+        $anggaran = $request->input('anggaran');
+        $kategori = $request->input('kategori');
+        $pelatihan = $request->input('pelatihan');
+        $angkatan = $request->input('angkatan');
+
+        $query = HasilPelatihanModel::with(['pelatihan', 'sesi', 'user.profil'])->get();
+
+        if ($tahun) {
+            $query = $query->filter(function ($hasil) use ($tahun) {
+                return $hasil->pelatihan->jpl->tahun == $tahun;
+            });
+        }
+        if ($anggaran) {
+            $query = $query->filter(function ($hasil) use ($anggaran) {
+                return $hasil->pelatihan->jpl->anggaran == $anggaran;
+            });
+        }
+        if ($kategori) {
+            $query = $query->filter(function ($hasil) use ($kategori) {
+                return $hasil->pelatihan->kategori->nama == $kategori;
+            });
+        }
+        if ($pelatihan) {
+            $query = $query->filter(function ($hasil) use ($pelatihan) {
+                return $hasil->pelatihan->judul == $pelatihan;
+            });
+        }
+        if ($angkatan) {
+            $query = $query->filter(function ($hasil) use ($angkatan) {
+                return $hasil->sesi->angkatan == $angkatan;
+            });
+        }
+
+        foreach ($umurRanges as $range) {
+            $age = explode('-', $range);
+            $users = $query->filter(function ($user) use ($age) {
+                return (date('Y') - date('Y', strtotime($user->user->profil->tanggal_lahir))) >= $age[0] &&
+                       (date('Y') - date('Y', strtotime($user->user->profil->tanggal_lahir))) <= $age[1];
+            });
+
+            $lk = $users->where('jenis_kelamin', 'L')->count();
+            $pr = $users->count() - $lk;
+
+            $data["u{$age[0]}_lk"] = $lk;
+            $data["u{$age[0]}_pr"] = $pr;
+
+            $total += $users->count();
+        }
+
+        return [
+            'data' => $data,
+            'total' => $total
+        ];
+
+        // return response()->json([
+        //     'response_code' => 200,
+        //     'message' => 'success',
+        //     'data' => $data,
+        //     'total' => $total
+        // ], 200);
+    }
+
+    public function getDataPendidikan(Request $request) {
+        $query = HasilPelatihanModel::with(['pelatihan', 'sesi', 'user.profil'])->get();
+
+        $tahun = $request->input('tahun');
+        $anggaran = $request->input('anggaran');
+        $kategori = $request->input('kategori');
+        $pelatihan = $request->input('pelatihan');
+        $angkatan = $request->input('angkatan');
+
+        if ($tahun) {
+            $query = $query->filter(function ($hasil) use ($tahun) {
+                return $hasil->pelatihan->jpl->tahun == $tahun;
+            });
+        }
+        if ($anggaran) {
+            $query = $query->filter(function ($hasil) use ($anggaran) {
+                return $hasil->pelatihan->jpl->anggaran == $anggaran;
+            });
+        }
+        if ($kategori) {
+            $query = $query->filter(function ($hasil) use ($kategori) {
+                return $hasil->pelatihan->kategori->nama == $kategori;
+            });
+        }
+        if ($pelatihan) {
+            $query = $query->filter(function ($hasil) use ($pelatihan) {
+                return $hasil->pelatihan->judul == $pelatihan;
+            });
+        }
+        if ($angkatan) {
+            $query = $query->filter(function ($hasil) use ($angkatan) {
+                return $hasil->sesi->angkatan == $angkatan;
+            });
+        }
+
+        // $users = User::with('profil')->where('role', 'Kandidat')->get();
+        $pendidikan = [
+            'S3' => 0,
+            'S2' => 0,
+            'S1' => 0,
+            'SMK' => 0,
+            'SMA' => 0,
+            'SMP' => 0,
+            'SD' => 0,
+        ];
+        foreach ($query as $user) {
+            if ($user->user->profil->pendidikan_s3 != null) {
+                $pendidikan['S3'] += 1;
+            } elseif ($user->user->profil->pendidikan_s2 != null) {
+                $pendidikan['S2'] += 1;
+            } elseif ($user->user->profil->pendidikan_s1 != null) {
+                $pendidikan['S1'] += 1;
+            } elseif ($user->user->profil->pendidikan_smk != null) {
+                $pendidikan['SMK'] += 1;
+            } elseif ($user->user->profil->pendidikan_sma != null) {
+                $pendidikan['SMA'] += 1;
+            } elseif ($user->user->profil->pendidikan_smp != null) {
+                $pendidikan['SMP'] += 1;
+            } elseif ($user->user->profil->pendidikan_sd != null) {
+                $pendidikan['SD'] += 1;
+            }
+        }
+        return $pendidikan;
+        // return response()->json([
+        //     'data' => $data
+        // ], 200);
+    }
+
+    public function getDataAnggaran(Request $request) {
+        $query = HasilPelatihanModel::with(['pelatihan', 'sesi', 'user.profil'])->get();
+
+        $tahun = $request->input('tahun');
+        $anggaran = $request->input('anggaran');
+        $kategori = $request->input('kategori');
+        $pelatihan = $request->input('pelatihan');
+        $angkatan = $request->input('angkatan');
+
+        if ($tahun) {
+            $query = $query->filter(function ($hasil) use ($tahun) {
+                return $hasil->pelatihan->jpl->tahun == $tahun;
+            });
+        }
+        if ($anggaran) {
+            $query = $query->filter(function ($hasil) use ($anggaran) {
+                return $hasil->pelatihan->jpl->anggaran == $anggaran;
+            });
+        }
+        if ($kategori) {
+            $query = $query->filter(function ($hasil) use ($kategori) {
+                return $hasil->pelatihan->kategori->nama == $kategori;
+            });
+        }
+        if ($pelatihan) {
+            $query = $query->filter(function ($hasil) use ($pelatihan) {
+                return $hasil->pelatihan->judul == $pelatihan;
+            });
+        }
+        if ($angkatan) {
+            $query = $query->filter(function ($hasil) use ($angkatan) {
+                return $hasil->sesi->angkatan == $angkatan;
+            });
+        }
+
+        $anggaran = [
+            'APBN' => 0,
+            'APBD' => 0,
+            'APBN Covid' => 0,
+        ];
+        foreach ($query as $data) {
+            $id_pelatihan = $data->pelatihan->id;
+            $jenis = $data->pelatihan->jpl->anggaran;
+            $anggaran[$jenis] = $data->where('id_pelatihan', $id_pelatihan)->count();
+        }
+
+        return $anggaran;
+        // return response()->json([
+        //     'data' => $anggaran
+        // ], 200);
+    }
+
+    public function getDataKompetensi(Request $request) {
+        $query = HasilPelatihanModel::with(['pelatihan', 'sesi', 'user.profil'])->get();
+
+        $tahun = $request->input('tahun');
+        $anggaran = $request->input('anggaran');
+        $kategori = $request->input('kategori');
+        $pelatihan = $request->input('pelatihan');
+        $angkatan = $request->input('angkatan');
+
+        if ($tahun) {
+            $query = $query->filter(function ($hasil) use ($tahun) {
+                return $hasil->pelatihan->jpl->tahun == $tahun;
+            });
+        }
+        if ($anggaran) {
+            $query = $query->filter(function ($hasil) use ($anggaran) {
+                return $hasil->pelatihan->jpl->anggaran == $anggaran;
+            });
+        }
+        if ($kategori) {
+            $query = $query->filter(function ($hasil) use ($kategori) {
+                return $hasil->pelatihan->kategori->nama == $kategori;
+            });
+        }
+        if ($pelatihan) {
+            $query = $query->filter(function ($hasil) use ($pelatihan) {
+                return $hasil->pelatihan->judul == $pelatihan;
+            });
+        }
+        if ($angkatan) {
+            $query = $query->filter(function ($hasil) use ($angkatan) {
+                return $hasil->sesi->angkatan == $angkatan;
+            });
+        }
+
+        $kompetensi = [
+            'Lulus' => 0,
+            'Tidak Lulus' => 0,
+            'Proses' => 0,
+        ];
+        foreach ($query as $data) {
+            $id_user = $data->user->id;
+            // $status = $data->status_seleksi_daftar_ulang;
+            $status = $data->keterangan;
+            if ($status != null) {
+                $kompetensi[$status] = $data->where('keterangan', $status)->count();
+            }
+            elseif ($status == null) {
+                $kompetensi['Proses'] = $data->where('keterangan', $status)->count();
+            }
+        }
+
+        return $kompetensi;
+        // return response()->json([
+        //     'data' => $kompetensi
+        // ], 200);
+    }
+
     public function getStatistik(Request $request) {
-        $kandidat = User::where('role', 'Kandidat')->get();
+        // kamingsun ganti pengecekan lewat pelatihan buat cari siswa bukan kandidat
+        $kandidat = User::with('profil')->where('role', 'Kandidat')->get();
         $total_siswa = $kandidat->count();
-        // coming soon cari di database
-        $count_lk = ProfilModel::join('users', 'profil.id_user', '=', 'users.id')
-                    ->whereIn('users.id', $kandidat->pluck('id'))
-                    ->where('profil.jenis_kelamin', 'L')
-                    ->count();
-        $count_pr = ProfilModel::join('users', 'profil.id_user', '=', 'users.id')
-                    ->whereIn('users.id', $kandidat->pluck('id'))
-                    ->where('profil.jenis_kelamin', 'P')
-                    ->count();
-        $avg_umur = round(ProfilModel::join('users', 'profil.id_user', '=', 'users.id')
-                    ->whereIn('users.id', $kandidat->pluck('id'))
-                    ->avg(DB::raw('YEAR(CURDATE()) - YEAR(tanggal_lahir)'))
-                    , 2);
+
+        $count_lk = $kandidat->where('profil.jenis_kelamin', 'L')->count();
+        $count_pr = $kandidat->where('profil.jenis_kelamin', 'P')->count();
+        $avg_umur = round($kandidat->avg(function ($user) {
+                        return Carbon::parse($user->profil->tanggal_lahir)->diffInYears(Carbon::now());
+                    }), 2);
 
         // TO DO
         // count masing-masing laki & perempuan per tahun
@@ -116,12 +358,20 @@ class DashboardController extends Controller
             'response_code' => 200,
             'message' => 'success',
             'data' => [
-                'total_siswa' => $total_siswa,
-                'count_laki' => $count_lk,
-                'count_perempuan' => $count_pr,
-                'avg_umur' => $avg_umur,
+                'non_chart' => [
+                    'total_siswa' => $total_siswa,
+                    'count_laki' => $count_lk,
+                    'count_perempuan' => $count_pr,
+                    'avg_umur' => $avg_umur,
+                ],
+                'chart' => [
+                    'umur' => $this->getDataUmur($request),
+                    'kompetensi' => $this->getDataKompetensi($request),
+                    'anggaran' => $this->getDataAnggaran($request),
+                    'pendidikan' => $this->getDataPendidikan($request),
                 ]
-            ], 200);
+            ]
+        ]);
     }
 
     /**

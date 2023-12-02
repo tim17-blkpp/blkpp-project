@@ -131,7 +131,7 @@
             query_tahun = selectedYear;
 
             // Memanggil fungsi untuk mengubah chart berdasarkan tahun yang dipilih
-            fetchStatistik();
+            fetchStatistik(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
             fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
         });
         anggaranDropdown.addEventListener('click', function (event) {
@@ -140,37 +140,55 @@
 
             console.log(query_anggaran);
 
-            fetchStatistik();
+            fetchStatistik(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
             fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
         });
         kategoriDropdown.addEventListener('click', function (event) {
             var selectedKategori = event.target.textContent;
             query_kategori = selectedKategori;
 
-            fetchStatistik();
+            fetchStatistik(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
             fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
         });
         pelatihanDropdown.addEventListener('click', function (event) {
             var selectedPelatihan = event.target.textContent;
             query_pelatihan = selectedPelatihan;
 
-            fetchStatistik();
+            fetchStatistik(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
             fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
         });
         angkatanDropdown.addEventListener('click', function (event) {
             var selectedAngkatan = event.target.textContent;
             query_angkatan = selectedAngkatan;
 
-            fetchStatistik();
+            fetchStatistik(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
             fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
         });
 
-        function fetchStatistik() {
+        function fetchStatistik(tahun = null, anggaran = null, kategori = null, pelatihan = null, angkatan = null) {
             // mendapatkan token API yang sudah dibuat saat login
             let token = "{{ Session::get('token') }}";
 
+            // tambah query filtering ke url
+            var apiUrl = '/api/data-statistik?';
+            if (tahun != null && tahun != "Semua Tahun") {
+                apiUrl += 'tahun=' + tahun + '&';
+            }
+            if (anggaran != null && anggaran != "Semua Anggaran") {
+                apiUrl += 'anggaran=' + anggaran + '&';
+            }
+            if (kategori != null && kategori != "Semua Kategori") {
+                apiUrl += 'kategori=' + kategori + '&';
+            }
+            if (pelatihan != null && pelatihan != "Semua Pelatihan") {
+                apiUrl += 'pelatihan=' + pelatihan + '&';
+            }
+            if (angkatan != null && angkatan != "Semua Angkatan") {
+                apiUrl += 'angkatan=' + angkatan + '&';
+            }
+
             // fetch data dari API
-            fetch('/api/get-statistik', {
+            fetch(apiUrl, {
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
@@ -181,7 +199,7 @@
             .then(data => {
                 // Extract the data object
                 var stats = data.data;
-                // console.log(data.data);
+                // console.log(stats.chart.kompetensi);
                 updateChart(stats);
             })
             .catch(error => console.error('Error:', error));
@@ -192,13 +210,13 @@
             const totalPerempuan = 11;
             const rataUmur = 35;
             var totalsiswa = document.getElementById("totalSiswa");
-            totalsiswa.innerHTML = "Total Siswa " + stats.total_siswa;
+            totalsiswa.innerHTML = "Total Siswa " + stats.non_chart.total_siswa;
             var countlaki = document.getElementById("countLaki");
-            countlaki.innerHTML = "Total Laki " + stats.count_laki  ;
+            countlaki.innerHTML = "Total Laki " + stats.non_chart.count_laki  ;
             var countperempuan = document.getElementById("countPerempuan");
-            countperempuan.innerHTML = "Total Perempuan " + stats.count_perempuan;
+            countperempuan.innerHTML = "Total Perempuan " + stats.non_chart.count_perempuan;
             var averageumur = document.getElementById("avgUmur");
-            averageumur.innerHTML = "Rata-rata Umur " + stats.avg_umur;
+            averageumur.innerHTML = "Rata-rata Umur " + stats.non_chart.avg_umur;
 
             const xValues = ["Desain Grafis", "Audio Video", "Electro", "Mechanical", "Cooking Cookies"];
             const yValues = [55, 49, 44, 24, 15];
@@ -213,10 +231,12 @@
             new Chart("kompetensi", {
             type: "pie",
             data: {
-                labels: xValues,
+                // labels: xValues,
+                labels: Object.keys(stats.chart.kompetensi),
                 datasets: [{
                 backgroundColor: barColors,
-                data: yValues
+                // data: yValues
+                data: Object.values(stats.chart.kompetensi)
                 }]
             },
             options: {
@@ -235,10 +255,10 @@
             new Chart("pendidikan", {
             type: "doughnut",
             data: {
-                labels: xValues,
+                labels: Object.keys(stats.chart.pendidikan),
                 datasets: [{
                 backgroundColor: barColors,
-                data: yValues
+                data: Object.values(stats.chart.pendidikan)
                 }]
             },
             options: {
@@ -364,7 +384,7 @@
         function fetchDataPelatihan(tahun = null, anggaran = null, kategori = null, pelatihan = null, angkatan = null) {
             let token = "{{ Session::get('token') }}";
 
-            // to do coming soon
+            // tambah query filtering ke url
             var apiUrl = '/api/data-pelatihan?';
             if (tahun != null && tahun != "Semua Tahun") {
                 apiUrl += 'tahun=' + tahun + '&';

@@ -36,3 +36,10 @@ Route::middleware('auth:sanctum', 'checkRole:Super Admin,Admin')->group(function
 });
 
 Route::get('/data-pelatihan', [DashboardController::class, 'getDataPelatihan']);
+
+Route::get('/data-chart-usia', [DashboardController::class, 'getDataUmur']);
+Route::get('/data-chart-pendidikan', [DashboardController::class, 'getDataPendidikan']);
+Route::get('/data-chart-anggaran', [DashboardController::class, 'getDataAnggaran']);
+Route::get('/data-chart-kompetensi', [DashboardController::class, 'getDataKompetensi']);
+
+Route::get('/data-statistik', [DashboardController::class, 'getStatistik']);

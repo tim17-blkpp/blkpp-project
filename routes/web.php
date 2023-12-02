@@ -45,6 +45,8 @@ Route::get('/detail_lowongan_pekerjaan', [LowonganKerjaUserController::class, 'd
 Route::get('/pelatihan', [PelatihanUserController::class, 'get'])->name('pelatihan.get');
 Route::get('/detail_pelatihan', [PelatihanUserController::class, 'detail'])->name('pelatihan.detail');
 Route::get('/kontak', [KontakController::class, 'get'])->name('kontak.get');
+Route::get('/pakta-integritas', [LandingController::class, 'pakta'])->name('landing.pakta');
+
 
 Route::resource('/dashboard-kandidat', DashboardKandidatController::class)->middleware(['checkRole:Kandidat', 'auth', 'verified']);
 Route::resource('/data-diri-kandidat', DataDiriKandidatController::class)->middleware(['checkRole:Kandidat', 'auth', 'verified']);
