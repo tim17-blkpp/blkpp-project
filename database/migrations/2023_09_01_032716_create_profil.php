@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nik')->unique();
             $table->string('avatar')->nullable();
             $table->string('tempat_lahir')->nullable();
-            $table->timestamp('tanggal_lahir')->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->string('pendidikan')->nullable();
             $table->string('tahun_pendidikan')->nullable();
             $table->string('alamat')->nullable();
