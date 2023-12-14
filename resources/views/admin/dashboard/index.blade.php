@@ -205,10 +205,9 @@
             .catch(error => console.error('Error:', error));
         }
 
+        let myPieChart, myBarChart;
+
         function updateChart(stats) {
-            const totalLaki = 19;
-            const totalPerempuan = 11;
-            const rataUmur = 35;
             var totalsiswa = document.getElementById("totalSiswa");
             totalsiswa.innerHTML = "Total Siswa " + stats.non_chart.total_siswa;
             var countlaki = document.getElementById("countLaki");
@@ -218,8 +217,6 @@
             var averageumur = document.getElementById("avgUmur");
             averageumur.innerHTML = "Rata-rata Umur " + stats.non_chart.avg_umur;
 
-            const xValues = ["Desain Grafis", "Audio Video", "Electro", "Mechanical", "Cooking Cookies"];
-            const yValues = [55, 49, 44, 24, 15];
             const barColors = [
             "#b91d47",
             "#00aba9",
@@ -228,28 +225,33 @@
             "#1e7145"
             ];
 
-            new Chart("kompetensi", {
-            type: "pie",
-            data: {
-                // labels: xValues,
-                labels: Object.keys(stats.chart.kompetensi),
-                datasets: [{
-                backgroundColor: barColors,
-                // data: yValues
-                data: Object.values(stats.chart.kompetensi)
-                }]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: "Kompetensi",
-                    fontSize: 18
-                },
-                legend: {
-                    display: true,
-                    position: 'bottom' // Set the legend position to 'bottom'
-                }
+            //pie chart bar update
+            if (myPieChart) {
+                myPieChart.destroy();
             }
+
+            // Create new pie chart
+            const ctxPie = document.getElementById("kompetensi").getContext("2d");
+            myPieChart = new Chart(ctxPie, {
+                type: "pie",
+                data: {
+                    labels: Object.keys(stats.chart.kompetensi),
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: Object.values(stats.chart.kompetensi)
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Kompetensi",
+                        fontSize: 18
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    }
+                }
             });
 
             new Chart("pendidikan", {
@@ -274,8 +276,7 @@
             }
             });
 
-            const valueAnggaranX = ["2019", "2010", "2011", "2012"];
-            const valueAnggaranY = [450, 1100, 1500, 1600];
+            
 
             new Chart("barAnggaran", {
             type: "line",
@@ -283,19 +284,19 @@
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
                 datasets: [
                 {
-                    label: "APBN",
+                    label: Object.keys(stats.chart.anggaran)[0],
                     borderColor: "rgb(75, 192, 192)",
                     data: [10, 25, 30, 45, 50, 60],
                     fill: false,
                 },
                 {
-                    label: "DPD",
+                    label: Object.keys(stats.chart.anggaran)[1],
                     borderColor: "rgb(255, 0, 0)",
                     data: [20, 35, 40, 55, 60, 70], // Ganti data ini sesuai kebutuhan Anda
                     fill: false,
                 },
                 {
-                    label: "APBN",
+                    label: Object.keys(stats.chart.anggaran)[2],
                     borderColor: "rgb(255, 65, 0)",
                     data: [15, 30, 20, 35, 10, 50], // Ganti data ini sesuai kebutuhan Anda
                     fill: false,
@@ -495,6 +496,7 @@
                 });
             });
         });
+        
       </script>
 
 @endsection
