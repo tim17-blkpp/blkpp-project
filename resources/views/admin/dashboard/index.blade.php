@@ -2,61 +2,72 @@
 @section('content')
 
 <div>
-    <div class="row mb-2">
-        <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="tahunDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Semua Tahun
+    <div class="row mb-2 p-2">
+        <div class="col p-0">
+            <div class="dropdown d-flex">
+                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="tahunDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Semua Tahun
                 <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdownMenu">
-                <li><a class="dropdown-item" href="#">Semua Tahun</a></li>
+                </a>
+                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdownMenu">
+                     <li><a class="dropdown-item" href="#">Semua Tahun</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col p-0">
+            <div class="dropdown d-flex">
+                    <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="anggaranDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Semua Anggaran
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="anggaranDropdownMenu">
+                        <li><a class="dropdown-item" href="#">Semua Anggaran</a></li>
+                        <li><a class="dropdown-item" href="#">APBN</a></li>
+                        <li><a class="dropdown-item" href="#">APBD</a></li>
+                        <li><a class="dropdown-item" href="#">APBN Covid</a></li>
+                    </ul>
+            </div>
+        </div>
 
-            </ul>
+        <div class="col p-0">
+            <div class="dropdown d-flex">
+                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="kategoriDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Semua Kategori
+                </a>
+                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="kategoriDropdownMenu">
+                    <li><a class="dropdown-item" href="#">Semua Kategori</a></li>
+                    @foreach($kategori as $data)
+                        <li><a class="dropdown-item" href="#">{{ $data->nama}}</a></li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
-        <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="anggaranDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Semua Anggaran
-            </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="anggaranDropdownMenu">
-                <li><a class="dropdown-item" href="#">Semua Anggaran</a></li>
-                <li><a class="dropdown-item" href="#">APBN</a></li>
-                <li><a class="dropdown-item" href="#">APBD</a></li>
-                <li><a class="dropdown-item" href="#">APBN Covid</a></li>
-            </ul>
+        <div class="col p-0">
+            <div class="dropdown d-flex">
+                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="pelatihanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Semua Pelatihan
+                </a>
+                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdownMenu">
+                    <li><a class="dropdown-item" href="#">Semua Pelatihan</a></li>
+                    @foreach($pelatihan as $data)
+                        <li><a class="dropdown-item" href="#">{{ $data->judul}}</a></li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
-        <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="kategoriDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Semua Kategori
-            </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="kategoriDropdownMenu">
-                <li><a class="dropdown-item" href="#">Semua Kategori</a></li>
-                @foreach($kategori as $data)
-                    <li><a class="dropdown-item" href="#">{{ $data->nama}}</a></li>
-                @endforeach
-            </ul>
-        </div>
-        <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="pelatihanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Semua Pelatihan
-            </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdownMenu">
-                <li><a class="dropdown-item" href="#">Semua Pelatihan</a></li>
-                @foreach($pelatihan as $data)
-                    <li><a class="dropdown-item" href="#">{{ $data->judul}}</a></li>
-                @endforeach
-            </ul>
-        </div>
-        <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="angkatanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Semua Angkatan
-            </a>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdownMenu">
-                <li><a class="dropdown-item" href="#">Semua Angkatan</a></li>
-                @foreach($angkatan as $data)
-                    <li><a class="dropdown-item" href="#">Angkatan {{ $data->angkatan }}</a></li>
-                @endforeach
-            </ul>
-        </div>
+        <div class="col p-0">
+            <div class="dropdown d-flex">
+                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="angkatanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Semua Angkatan
+                </a>
+                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdownMenu">
+                    <li><a class="dropdown-item" href="#">Semua Angkatan</a></li>
+                    @foreach($angkatan as $data)
+                        <li><a class="dropdown-item" href="#">Angkatan {{ $data->angkatan }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>  
     </div>
 
     <div class="row mb-2">
@@ -206,7 +217,7 @@
             .catch(error => console.error('Error:', error));
         }
 
-        let myPieChart, myBarChart;
+        let myPieChart, myBarChart, myDoughnutChart;
 
         function updateChart(stats) {
             var totalsiswa = document.getElementById("totalSiswa");
@@ -218,13 +229,6 @@
             var averageumur = document.getElementById("avgUmur");
             averageumur.innerHTML = "Rata-rata Umur " + stats.non_chart.avg_umur;
 
-            const barColors = [
-            "#b91d47",
-            "#00aba9",
-            "#2b5797",
-            "#e8c3b9",
-            "#1e7145"
-            ];
 
             //pie chart bar update
             if (myPieChart) {
@@ -238,7 +242,7 @@
                 data: {
                     labels: Object.keys(stats.chart.kompetensi),
                     datasets: [{
-                        backgroundColor: barColors,
+                        backgroundColor: ["#FA93B2", "#FBBB16", "#220FFF"],
                         data: Object.values(stats.chart.kompetensi)
                     }]
                 },
@@ -285,26 +289,32 @@
                 }
             });
 
-            new Chart("pendidikan", {
-            type: "doughnut",
-            data: {
-                labels: Object.keys(stats.chart.pendidikan),
-                datasets: [{
-                backgroundColor: barColors,
-                data: Object.values(stats.chart.pendidikan)
-                }]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: "Pendidikan",
-                    fontSize: 18
-                },
-                legend: {
-                    display: true,
-                    position: 'bottom' // Set the legend position to 'bottom'
-                }
+            //pie chart bar update
+            if (myDoughnutChart) {
+                myDoughnutChart.destroy();
             }
+            const ctxDoughnut = document.getElementById("pendidikan").getContext("2d");
+
+            myDoughnutChart = new Chart("pendidikan", {
+                type: "doughnut",
+                data: {
+                    labels: Object.keys(stats.chart.pendidikan),
+                    datasets: [{
+                    backgroundColor: ["#FA93B2", "#FBBB16", "#220FFF","#7BCBCA", "#D580FF", "#A3F414"],
+                    data: Object.values(stats.chart.pendidikan)
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Pendidikan",
+                        fontSize: 18
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom' // Set the legend position to 'bottom'
+                    }
+                }
             });
 
 
@@ -316,19 +326,19 @@
                 datasets: [
                 {
                     label: Object.keys(stats.chart.anggaran)[0],
-                    borderColor: "rgb(75, 192, 192)",
+                    borderColor: "#FF0000",
                     data: [10, 25, 30, 45, 50, 60],
                     fill: false,
                 },
                 {
                     label: Object.keys(stats.chart.anggaran)[1],
-                    borderColor: "rgb(255, 0, 0)",
+                    borderColor: "#FFB800",
                     data: [20, 35, 40, 55, 60, 70], // Ganti data ini sesuai kebutuhan Anda
                     fill: false,
                 },
                 {
                     label: Object.keys(stats.chart.anggaran)[2],
-                    borderColor: "rgb(255, 65, 0)",
+                    borderColor: "#0094FF",
                     data: [15, 30, 20, 35, 10, 50], // Ganti data ini sesuai kebutuhan Anda
                     fill: false,
                 },
@@ -356,31 +366,49 @@
             },
             });
 
-            // Data for two datasets
-            const dataset1 = [130, 145, 140, 135];
-            const dataset2 = [120, 115, 145, 130];
-            const labels = ["20", "35", "40", "45"];
+            if (myBarChart) {
+                myBarChart.destroy();
+            }
+
+            const umurData = Object.values(stats.chart.umur);
+            const ageGroups = Object.keys(umurData[0]).filter(key => key.includes('_lk')); // Assuming '_lk' is present in all Laki-Laki keys
+
+            // Filter out undefined values and get only numeric values
+            const datasetLK = ageGroups
+            .map(key => umurData.map(entry => entry[key]).filter(value => typeof value === 'number'))
+            .flat();
+
+            // Adjust the suffix to '_pr' for Perempuan keys
+            const datasetPR = ageGroups
+            .map(key => umurData.map(entry => entry[key.replace('_lk', '_pr')]).filter(value => typeof value === 'number'))
+            .flat();
 
             // Create the bar chart
-            const ctx = document.getElementById("barKelamin").getContext("2d");
-            const myChart = new Chart(ctx, {
+            const ctxBar = document.getElementById("barKelamin").getContext("2d");
+            // Assuming stats.chart.umur is an object with properties, including 'total'
+            console.log('LK Data:');
+            umurData.forEach(entry => {
+                console.log('Entry:', entry);
+            });
+
+            myBarChart = new Chart("barKelamin", {
                 type: "bar",
                 data: {
-                    labels: labels,
+                    labels: ["17-20", "21-30", "31-40", "41-50", "51-60", "61-70"],
                     datasets: [
                         {
                             label: "Laki-Laki",
                             backgroundColor: "rgba(75, 192, 192, 0.2)",
                             borderColor: "rgba(75, 192, 192, 1)",
                             borderWidth: 1,
-                            data: dataset1
+                            data: datasetLK
                         },
                         {
                             label: "Perempuan",
                             backgroundColor: "rgba(255, 99, 132, 0.2)",
                             borderColor: "rgba(255, 99, 132, 1)",
                             borderWidth: 1,
-                            data: dataset2
+                            data: datasetPR
                         }
                     ]
                 },
