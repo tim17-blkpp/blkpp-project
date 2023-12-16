@@ -16,7 +16,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(KonfigurasiSeeder::class);
         $this->call(SuperadminSeeder::class);
-        $this->call(ProfilSeeder::class);
+        // $this->call(ProfilSeeder::class);
         $this->call(JPLSeeder::class);
+        $this->call(KategoriPelatihanSeeder::class);
+        $this->call(PelatihanSeeder::class);
+        $this->call(SesiPelatihanSeeder::class);
+        $this->call(HasilPelatihanSeeder::class);
     }
 }

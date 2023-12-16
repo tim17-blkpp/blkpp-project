@@ -62,7 +62,7 @@ class SesiPelatihanController extends Controller
             'status' => $request->sts,
         ]);
 
-        return redirect()->route('sesi_pelatihan.index')->with(['success' => 'Data Berhasil Disimpan']);
+        return redirect()->back()->with(['success' => 'Data Berhasil Disimpan']);
     }
 
     public function show($id)
@@ -131,6 +131,6 @@ class SesiPelatihanController extends Controller
     {
         $kelas = SesiPelatihanModel::find($id);
         $kelas->delete();
-        return redirect()->route('sesi_pelatihan.index')->with(['success' => 'Data Berhasil Dihapus']);
+        return redirect()->back()->with(['success' => 'Data Berhasil Dihapus']);
     }
 }

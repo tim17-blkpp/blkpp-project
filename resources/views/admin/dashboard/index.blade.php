@@ -99,6 +99,7 @@
                 <!-- Nanti data pelatihan masuk sini -->
             </tbody>
         </table>
+
     </div>
       <script>
         // Mendapatkan elemen dropdown tahun
@@ -138,7 +139,7 @@
             var selectedAnggaran = event.target.textContent;
             query_anggaran = selectedAnggaran;
 
-            console.log(query_anggaran);
+            // console.log(query_anggaran);
 
             fetchStatistik(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
             fetchDataPelatihan(query_tahun, query_anggaran, query_kategori, query_pelatihan, query_angkatan);
@@ -250,7 +251,37 @@
                     legend: {
                         display: true,
                         position: 'bottom'
-                    }
+                    },
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                                dataArr.map(data => {
+                                    sum += data;
+                                });
+                                let percentage = ((value * 100) / sum).toFixed(0) + "%";
+                                return percentage;
+                            },
+                            color: '#fff', // Text color
+                            anchor: 'end',
+                            align: 'start',
+                            offset: -10
+                        }
+                    },
+                    // tooltips: {
+                    //     callbacks: {
+                    //         label: function (tooltipItem, data) {
+                    //             var dataset = data.datasets[tooltipItem.datasetIndex];
+                    //             var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                    //                 return previousValue + currentValue;
+                    //             });
+                    //             var currentValue = dataset.data[tooltipItem.index];
+                    //             var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                    //             return percentage + "%";
+                    //         }
+                    //     }
+                    // }
                 }
             });
 
@@ -276,7 +307,7 @@
             }
             });
 
-            
+
 
             new Chart("barAnggaran", {
             type: "line",
@@ -496,7 +527,7 @@
                 });
             });
         });
-        
+
       </script>
 
 @endsection

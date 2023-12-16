@@ -24,9 +24,9 @@ class PelatihanModelFactory extends Factory
     {
         $id_kategori = KategoriPelatihanModel::inRandomOrder()->first()->id;
         $id_jpl = JPLModel::inRandomOrder()->first()->id;
-        $judul = $this->faker->randomElement('Pembuatan Produk Roti dan Pattiserie', 'Pelatihan Peningkatan Produktivitas',
+        $judul = $this->faker->randomElement(['Pembuatan Produk Roti dan Pattiserie', 'Pelatihan Peningkatan Produktivitas',
                                             'Desain UI/UX dengan Figma bagi Desainer Website', 'Pelatihan Embedded System',
-                                            'Pelatihan Peningkatan Produktivitas');
+                                            'Pelatihan Peningkatan Produktivitas']);
         $deskripsi = $this->faker->sentences(6, true);
 
         return [

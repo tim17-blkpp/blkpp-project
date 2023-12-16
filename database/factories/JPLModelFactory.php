@@ -18,8 +18,8 @@ class JPLModelFactory extends Factory
     {
         return [
             //
-            'tahun' => $this->faker->numberBetween(2016, 2023),
-            'anggaran' => $this->faker->randomElement(['APBN', 'APBD']),
+            'tahun' => $this->faker->numberBetween(2020, 2023),
+            'anggaran' => $this->faker->randomElement(['APBN', 'APBD', 'APBN Covid']),
             'pelatihan' => $this->faker->randomElement(['COBA JPL', 'DBHCHT', 'DID', 'INSTITUSIONAL']),
             'kode' => $this->faker->unique()->numerify('####'),
             'jpl' => $this->faker->unique()->numerify('####'),

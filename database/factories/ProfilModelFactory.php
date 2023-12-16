@@ -27,6 +27,17 @@ class ProfilModelFactory extends Factory
         if ((int)(substr($nik, 6, 2)) > 40) {
             $jenis_kelamin = 'P';
         }
+        // $pendidikan = $this->faker->randomElement(['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3']);
+        $randomIndex = rand(1, 6);
+        $pendidikan = [
+            1 => 'pendidikan_sd',
+            2 => 'pendidikan_smp',
+            3 => 'pendidikan_sma',
+            4 => 'pendidikan_s1',
+            5 => 'pendidikan_s2',
+            6 => 'pendidikan_s3',
+        ];
+
         return [
             //
             'id_user' => $user->id,
@@ -35,8 +46,9 @@ class ProfilModelFactory extends Factory
             'tempat_lahir' => $this->faker->city(),
             // 'tanggal_lahir' => $this->faker->date(),
             'tanggal_lahir' => $this->faker->dateTimeBetween('-75 years', '-17 years')->format('Y-m-d'),
-            'pendidikan' => $this->faker->randomElement(['SMA', 'SMK', 'D3', 'S1', 'S2', 'S3']),
-            'tahun_pendidikan' => $this->faker->year(),
+            // 'pendidikan' => $this->faker->randomElement(['SMA', 'SMK', 'D3', 'S1', 'S2', 'S3']),
+            // 'tahun_pendidikan' => $this->faker->year(),
+            $pendidikan[$randomIndex] => $this->faker->sentence(2),
             // 'alamat' => $this->faker->address(),
             'nomor_hp' => $this->faker->phoneNumber(),
         ];

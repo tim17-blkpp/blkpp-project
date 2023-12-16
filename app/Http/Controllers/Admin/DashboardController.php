@@ -31,8 +31,10 @@ class DashboardController extends Controller
         $toptitle = 'Dashboard';
         $title = 'Dashboard';
         $subtitle = 'Data Dashboard';
-        $kategori = KategoriPelatihanModel::all();
-        $pelatihan = PelatihanModel::all();
+        // $kategori = KategoriPelatihanModel::all();
+        // $pelatihan = PelatihanModel::all();
+        $kategori = KategoriPelatihanModel::select('nama')->distinct()->get();
+        $pelatihan = PelatihanModel::select('judul')->distinct()->get();
         $sesi_pelatihan = SesiPelatihanModel::all();
         $angkatan = SesiPelatihanModel::select('angkatan')->distinct()->get();
 
@@ -82,6 +84,7 @@ class DashboardController extends Controller
             });
         }
         $query = $query->get();
+        // $query = $query->paginate(10);
 
         $all_sesi = SesiPelatihanModel::with('pelatihan')->get();
         return response()->json([
@@ -137,7 +140,7 @@ class DashboardController extends Controller
                        (date('Y') - date('Y', strtotime($user->user->profil->tanggal_lahir))) <= $age[1];
             });
 
-            $lk = $users->where('jenis_kelamin', 'L')->count();
+            $lk = $users->where('user.profil.jenis_kelamin', 'L')->count();
             $pr = $users->count() - $lk;
 
             $data["u{$age[0]}_lk"] = $lk;
@@ -199,7 +202,6 @@ class DashboardController extends Controller
             'S3' => 0,
             'S2' => 0,
             'S1' => 0,
-            'SMK' => 0,
             'SMA' => 0,
             'SMP' => 0,
             'SD' => 0,
@@ -211,8 +213,6 @@ class DashboardController extends Controller
                 $pendidikan['S2'] += 1;
             } elseif ($user->user->profil->pendidikan_s1 != null) {
                 $pendidikan['S1'] += 1;
-            } elseif ($user->user->profil->pendidikan_smk != null) {
-                $pendidikan['SMK'] += 1;
             } elseif ($user->user->profil->pendidikan_sma != null) {
                 $pendidikan['SMA'] += 1;
             } elseif ($user->user->profil->pendidikan_smp != null) {
@@ -228,7 +228,7 @@ class DashboardController extends Controller
     }
 
     public function getDataAnggaran(Request $request) {
-        $query = HasilPelatihanModel::with(['pelatihan', 'sesi', 'user.profil'])->get();
+        $query = HasilPelatihanModel::with(['pelatihan', 'sesi'])->get();
 
         $tahun = $request->input('tahun');
         $anggaran = $request->input('anggaran');
@@ -267,13 +267,21 @@ class DashboardController extends Controller
             'APBD' => 0,
             'APBN Covid' => 0,
         ];
+
+        $tahun_anggaran = [
+            '2020' => $anggaran,
+            '2021' => $anggaran,
+            '2022' => $anggaran,
+            '2023' => $anggaran
+        ];
+
         foreach ($query as $data) {
-            $id_pelatihan = $data->pelatihan->id;
+            $tahun = $data->pelatihan->jpl->tahun;
             $jenis = $data->pelatihan->jpl->anggaran;
-            $anggaran[$jenis] = $data->where('id_pelatihan', $id_pelatihan)->count();
+            $tahun_anggaran[$tahun][$jenis] += 1;
         }
 
-        return $anggaran;
+        return $tahun_anggaran;
         // return response()->json([
         //     'data' => $anggaran
         // ], 200);
@@ -339,14 +347,32 @@ class DashboardController extends Controller
 
     public function getStatistik(Request $request) {
         // kamingsun ganti pengecekan lewat pelatihan buat cari siswa bukan kandidat
-        $kandidat = User::with('profil')->where('role', 'Kandidat')->get();
+        // $kandidat = ProfilModel::with('user')->where('role', 'Kandidat')->get();
+        $kandidat = HasilPelatihanModel::with('user.profil')
+                    ->whereHas('user.profil', function ($query) {
+                        $query->where('role', 'Kandidat');
+                    })
+                    ->get();
         $total_siswa = $kandidat->count();
 
-        $count_lk = $kandidat->where('profil.jenis_kelamin', 'L')->count();
-        $count_pr = $kandidat->where('profil.jenis_kelamin', 'P')->count();
+        $count_lk = $kandidat->where('user.profil.jenis_kelamin', 'L')->count();
+        $count_pr = $kandidat->where('user.profil.jenis_kelamin', 'P')->count();
+
         $avg_umur = round($kandidat->avg(function ($user) {
-                        return Carbon::parse($user->profil->tanggal_lahir)->diffInYears(Carbon::now());
+                        return optional($user->user->profil)->tanggal_lahir
+                            ? Carbon::parse($user->user->profil->tanggal_lahir)->age
+                            : null;
                     }), 2);
+
+
+        // $kandidatWithProfil = $kandidat->filter(function ($item) {
+        //     return $item->user && $item->user->profil;
+        // });
+        // $avg_umur = round($kandidatWithProfil->avg(function ($user) {
+        //     return optional($user->user->profil)->tanggal_lahir
+        //         ? Carbon::parse($user->user->profil->tanggal_lahir)->age
+        //         : null;
+        // }), 2);
 
         // TO DO
         // count masing-masing laki & perempuan per tahun

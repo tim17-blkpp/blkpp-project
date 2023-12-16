@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\ProfilModel;
+use App\Models\HasilPelatihanModel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ProfilSeeder extends Seeder
+class HasilPelatihanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,6 @@ class ProfilSeeder extends Seeder
      */
     public function run()
     {
-        //
-        ProfilModel::factory(200)->create();
+        HasilPelatihanModel::factory(500)->create();
     }
 }
