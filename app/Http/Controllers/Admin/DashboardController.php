@@ -153,13 +153,6 @@ class DashboardController extends Controller
             'data' => $data,
             'total' => $total
         ];
-
-        // return response()->json([
-        //     'response_code' => 200,
-        //     'message' => 'success',
-        //     'data' => $data,
-        //     'total' => $total
-        // ], 200);
     }
 
     public function getDataPendidikan(Request $request) {
@@ -222,9 +215,6 @@ class DashboardController extends Controller
             }
         }
         return $pendidikan;
-        // return response()->json([
-        //     'data' => $data
-        // ], 200);
     }
 
     public function getDataAnggaran(Request $request) {
@@ -282,9 +272,6 @@ class DashboardController extends Controller
         }
 
         return $tahun_anggaran;
-        // return response()->json([
-        //     'data' => $anggaran
-        // ], 200);
     }
 
     public function getDataKompetensi(Request $request) {
@@ -340,19 +327,48 @@ class DashboardController extends Controller
         }
 
         return $kompetensi;
-        // return response()->json([
-        //     'data' => $kompetensi
-        // ], 200);
     }
 
     public function getStatistik(Request $request) {
         // kamingsun ganti pengecekan lewat pelatihan buat cari siswa bukan kandidat
         // $kandidat = ProfilModel::with('user')->where('role', 'Kandidat')->get();
-        $kandidat = HasilPelatihanModel::with('user.profil')
+        $kandidat = HasilPelatihanModel::with(['pelatihan', 'sesi', 'user.profil'])
                     ->whereHas('user.profil', function ($query) {
                         $query->where('role', 'Kandidat');
                     })
                     ->get();
+
+        $tahun = $request->input('tahun');
+        $anggaran = $request->input('anggaran');
+        $kategori = $request->input('kategori');
+        $pelatihan = $request->input('pelatihan');
+        $angkatan = $request->input('angkatan');
+
+        if ($tahun) {
+            $kandidat = $kandidat->filter(function ($hasil) use ($tahun) {
+                return $hasil->pelatihan->jpl->tahun == $tahun;
+            });
+        }
+        if ($anggaran) {
+            $kandidat = $kandidat->filter(function ($hasil) use ($anggaran) {
+                return $hasil->pelatihan->jpl->anggaran == $anggaran;
+            });
+        }
+        if ($kategori) {
+            $kandidat = $kandidat->filter(function ($hasil) use ($kategori) {
+                return $hasil->pelatihan->kategori->nama == $kategori;
+            });
+        }
+        if ($pelatihan) {
+            $kandidat = $kandidat->filter(function ($hasil) use ($pelatihan) {
+                return $hasil->pelatihan->judul == $pelatihan;
+            });
+        }
+        if ($angkatan) {
+            $kandidat = $kandidat->filter(function ($hasil) use ($angkatan) {
+                return $hasil->sesi->angkatan == $angkatan;
+            });
+        }
         $total_siswa = $kandidat->count();
 
         $count_lk = $kandidat->where('user.profil.jenis_kelamin', 'L')->count();
@@ -363,16 +379,6 @@ class DashboardController extends Controller
                             ? Carbon::parse($user->user->profil->tanggal_lahir)->age
                             : null;
                     }), 2);
-
-
-        // $kandidatWithProfil = $kandidat->filter(function ($item) {
-        //     return $item->user && $item->user->profil;
-        // });
-        // $avg_umur = round($kandidatWithProfil->avg(function ($user) {
-        //     return optional($user->user->profil)->tanggal_lahir
-        //         ? Carbon::parse($user->user->profil->tanggal_lahir)->age
-        //         : null;
-        // }), 2);
 
         // TO DO
         // count masing-masing laki & perempuan per tahun

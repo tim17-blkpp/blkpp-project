@@ -1,73 +1,75 @@
 @extends('layouts.main')
 @section('content')
-
+<style>
+    .long-text {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    /* style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;" */
+    .recap-chart {
+        background-color: white;
+        text-align: center;
+        margin: 10px;
+        border-radius: 10px;
+    }
+</style>
 <div>
-    <div class="row mb-2 p-2">
-        <div class="col p-0">
-            <div class="dropdown d-flex">
-                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="tahunDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Semua Tahun
+    <div class="row mb-2">
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="tahunDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Tahun
                 <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdownMenu">
-                     <li><a class="dropdown-item" href="#">Semua Tahun</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col p-0">
-            <div class="dropdown d-flex">
-                    <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="anggaranDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Semua Anggaran
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="anggaranDropdownMenu">
-                        <li><a class="dropdown-item" href="#">Semua Anggaran</a></li>
-                        <li><a class="dropdown-item" href="#">APBN</a></li>
-                        <li><a class="dropdown-item" href="#">APBD</a></li>
-                        <li><a class="dropdown-item" href="#">APBN Covid</a></li>
-                    </ul>
-            </div>
-        </div>
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="tahunDropdownMenu">
+                <li><a class="dropdown-item long-text" href="#">Semua Tahun</a></li>
 
-        <div class="col p-0">
-            <div class="dropdown d-flex">
-                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="kategoriDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Semua Kategori
-                </a>
-                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="kategoriDropdownMenu">
-                    <li><a class="dropdown-item" href="#">Semua Kategori</a></li>
-                    @foreach($kategori as $data)
-                        <li><a class="dropdown-item" href="#">{{ $data->nama}}</a></li>
-                    @endforeach
-                </ul>
-            </div>
+            </ul>
         </div>
-        <div class="col p-0">
-            <div class="dropdown d-flex">
-                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="pelatihanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Semua Pelatihan
-                </a>
-                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdownMenu">
-                    <li><a class="dropdown-item" href="#">Semua Pelatihan</a></li>
-                    @foreach($pelatihan as $data)
-                        <li><a class="dropdown-item" href="#">{{ $data->judul}}</a></li>
-                    @endforeach
-                </ul>
-            </div>
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="anggaranDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Anggaran
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="anggaranDropdownMenu">
+                <li><a class="dropdown-item long-text" href="#">Semua Anggaran</a></li>
+                <li><a class="dropdown-item long-text" href="#">APBN</a></li>
+                <li><a class="dropdown-item long-text" href="#">APBD</a></li>
+                <li><a class="dropdown-item long-text" href="#">APBN Covid</a></li>
+            </ul>
         </div>
-        <div class="col p-0">
-            <div class="dropdown d-flex">
-                <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="angkatanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    Semua Angkatan
-                </a>
-                <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdownMenu">
-                    <li><a class="dropdown-item" href="#">Semua Angkatan</a></li>
-                    @foreach($angkatan as $data)
-                        <li><a class="dropdown-item" href="#">Angkatan {{ $data->angkatan }}</a></li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>  
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="kategoriDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Kategori
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="kategoriDropdownMenu">
+                <li><a class="dropdown-item long-text" href="#">Semua Kategori</a></li>
+                @foreach($kategori as $data)
+                    <li><a class="dropdown-item long-text" href="#">{{ $data->nama}}</a></li>
+                @endforeach
+            </ul>
+        </div>
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between long-text" href="#" role="button" id="pelatihanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Pelatihan
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdownMenu">
+                <li><a class="dropdown-item" href="#">Semua Pelatihan</a></li>
+                @foreach($pelatihan as $data)
+                    <li><a class="dropdown-item long-text" href="#">{{ $data->judul}}</a></li>
+                @endforeach
+            </ul>
+        </div>
+        <div class="dropdown col d-flex">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="angkatanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Semua Angkatan
+            </a>
+            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdownMenu">
+                <li><a class="dropdown-item" href="#">Semua Angkatan</a></li>
+                @foreach($angkatan as $data)
+                    <li><a class="dropdown-item long-text" href="#">Angkatan {{ $data->angkatan }}</a></li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 
     <div class="row mb-2">
@@ -78,19 +80,19 @@
     </div>
 
     <div class="row mb-2">
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;" >
+        <div class="col recap-chart">
             <canvas id="barKelamin" style="max-width: 100%;"></canvas>
         </div>
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
+        <div class="col recap-chart">
             <canvas id="kompetensi" style=" max-width: 100%;"></canvas>
         </div>
     </div>
 
     <div class="row mb-2">
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
+        <div class="col recap-chart">
             <canvas id="barAnggaran" style="max-width: 100%;"></canvas>
         </div>
-        <div class="col" style="background-color: white; text-align: center; margin: 10px; border-radius: 10px;">
+        <div class="col recap-chart">
             <canvas id="pendidikan" style=" max-width: 100%;"></canvas>
         </div>
     </div>
@@ -217,7 +219,7 @@
             .catch(error => console.error('Error:', error));
         }
 
-        let myPieChart, myBarChart, myDoughnutChart;
+        let myPieChart, myBarChart, myDoughnutChart, myLineChart;
 
         function updateChart(stats) {
             var totalsiswa = document.getElementById("totalSiswa");
@@ -318,52 +320,55 @@
             });
 
 
+            //pie chart bar update
+            if (myLineChart) {
+                myLineChart.destroy();
+            }
+            const ctxLine = document.getElementById("barAnggaran").getContext("2d");
 
-            new Chart("barAnggaran", {
-            type: "line",
-            data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                datasets: [
-                {
-                    label: Object.keys(stats.chart.anggaran)[0],
-                    borderColor: "#FF0000",
-                    data: [10, 25, 30, 45, 50, 60],
-                    fill: false,
-                },
-                {
-                    label: Object.keys(stats.chart.anggaran)[1],
-                    borderColor: "#FFB800",
-                    data: [20, 35, 40, 55, 60, 70], // Ganti data ini sesuai kebutuhan Anda
-                    fill: false,
-                },
-                {
-                    label: Object.keys(stats.chart.anggaran)[2],
-                    borderColor: "#0094FF",
-                    data: [15, 30, 20, 35, 10, 50], // Ganti data ini sesuai kebutuhan Anda
-                    fill: false,
-                },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                x: {
-                    type: 'category',
-                    labels: {
-                    rotate: 45,
+            const anggaranData = stats.chart.anggaran;
+            // Extract available years from the data
+            const years = Object.keys(anggaranData);
+
+            // Generate datasets dynamically for each year
+            const lineChartData = {
+            labels: years,
+            datasets: ["APBN", "APBD", "APBN Covid"].map((type, index) => ({
+                label: type,
+                borderColor: getLineColor(index), // Use predefined colors based on index
+                data: years.map((year) => anggaranData[year][type]),
+                fill: false,
+                })),
+            };
+
+            function getLineColor(index) {
+                const predefinedColors = ["#FF0000", "#FFB800", "#0094FF"]; // Add more colors as needed
+                return predefinedColors[index % predefinedColors.length];
+            }
+
+            myLineChart = new Chart("barAnggaran", {
+                type: "line",
+                data: lineChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                    x: {
+                        type: 'category',
+                        labels: {
+                        rotate: 45,
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
                     }
+                    },
+                    title: {
+                        display: true,
+                        text: "Jenis Anggaran",
+                        fontSize: 18
+                    },
                 },
-                y: {
-                    beginAtZero: true
-                }
-                },
-                title: {
-                    display: true,
-                    text: "Jenis Anggaran",
-                    fontSize: 18
-                },
-            },
             });
 
             if (myBarChart) {
