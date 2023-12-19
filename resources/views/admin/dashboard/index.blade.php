@@ -49,7 +49,7 @@
             </ul>
         </div>
         <div class="dropdown col d-flex">
-            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between long-text" href="#" role="button" id="pelatihanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="btn btn-secondary dropdown-toggle w-100 dropdown-filter d-flex align-items-center justify-content-between" href="#" role="button" id="pelatihanDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 Semua Pelatihan
             </a>
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="pelatihanDropdownMenu">
@@ -66,17 +66,17 @@
             <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuLink" id="angkatanDropdownMenu">
                 <li><a class="dropdown-item" href="#">Semua Angkatan</a></li>
                 @foreach($angkatan as $data)
-                    <li><a class="dropdown-item long-text" href="#">Angkatan {{ $data->angkatan }}</a></li>
+                    <li><a class="dropdown-item long-text" href="#">Angkatan {{ $data }}</a></li>
                 @endforeach
             </ul>
         </div>
     </div>
 
     <div class="row mb-2">
-        <div id="totalSiswa" class="col d-flex justify-content-center align-items-center recap-user"></div>
-        <div id="countLaki" class="col d-flex justify-content-center align-items-center recap-user"></div>
-        <div id="countPerempuan" class="col d-flex justify-content-center align-items-center recap-user"></div>
-        <div id="avgUmur" class="col d-flex justify-content-center align-items-center recap-user"></div>
+        <div id="totalSiswa" class="text-center col d-flex justify-content-center align-items-center recap-user"></div>
+        <div id="countLaki" class="text-center col d-flex justify-content-center align-items-center recap-user"></div>
+        <div id="countPerempuan" class="text-center col d-flex justify-content-center align-items-center recap-user"></div>
+        <div id="avgUmur" class="text-center col d-flex justify-content-center align-items-center recap-user"></div>
     </div>
 
     <div class="row mb-2">
@@ -198,7 +198,7 @@
                 apiUrl += 'pelatihan=' + pelatihan + '&';
             }
             if (angkatan != null && angkatan != "Semua Angkatan") {
-                apiUrl += 'angkatan=' + angkatan + '&';
+                apiUrl += 'angkatan=' + angkatan.replace("Angkatan ", "") + '&';
             }
 
             // fetch data dari API
@@ -223,13 +223,13 @@
 
         function updateChart(stats) {
             var totalsiswa = document.getElementById("totalSiswa");
-            totalsiswa.innerHTML = "Total Siswa " + stats.non_chart.total_siswa;
+            totalsiswa.innerHTML = "Total Siswa <br>" + stats.non_chart.total_siswa;
             var countlaki = document.getElementById("countLaki");
-            countlaki.innerHTML = "Total Laki " + stats.non_chart.count_laki  ;
+            countlaki.innerHTML = "Total Laki <br>" + stats.non_chart.count_laki  ;
             var countperempuan = document.getElementById("countPerempuan");
-            countperempuan.innerHTML = "Total Perempuan " + stats.non_chart.count_perempuan;
+            countperempuan.innerHTML = "Total Perempuan <br>" + stats.non_chart.count_perempuan;
             var averageumur = document.getElementById("avgUmur");
-            averageumur.innerHTML = "Rata-rata Umur " + stats.non_chart.avg_umur;
+            averageumur.innerHTML = "Rata-rata Umur <br>" + stats.non_chart.avg_umur;
 
 
             //pie chart bar update
@@ -237,8 +237,12 @@
                 myPieChart.destroy();
             }
 
+            // require('chartjs-plugin-datalabels');
+            // Chart.register(ChartDataLabels);
+
             // Create new pie chart
             const ctxPie = document.getElementById("kompetensi").getContext("2d");
+
             myPieChart = new Chart(ctxPie, {
                 type: "pie",
                 data: {
@@ -266,29 +270,15 @@
                                 dataArr.map(data => {
                                     sum += data;
                                 });
-                                let percentage = ((value * 100) / sum).toFixed(0) + "%";
+                                let percentage = ((value * 100) / sum).toFixed(2) + "%";
                                 return percentage;
                             },
                             color: '#fff', // Text color
-                            anchor: 'end',
-                            align: 'start',
                             offset: -10
-                        }
+                        },
                     },
-                    // tooltips: {
-                    //     callbacks: {
-                    //         label: function (tooltipItem, data) {
-                    //             var dataset = data.datasets[tooltipItem.datasetIndex];
-                    //             var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
-                    //                 return previousValue + currentValue;
-                    //             });
-                    //             var currentValue = dataset.data[tooltipItem.index];
-                    //             var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
-                    //             return percentage + "%";
-                    //         }
-                    //     }
-                    // }
-                }
+                },
+                plugins: [ChartDataLabels],
             });
 
             //pie chart bar update
@@ -315,8 +305,24 @@
                     legend: {
                         display: true,
                         position: 'bottom' // Set the legend position to 'bottom'
-                    }
-                }
+                    },
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                                dataArr.map(data => {
+                                    sum += data;
+                                });
+                                let percentage = ((value * 100) / sum).toFixed(2) + "%";
+                                return percentage;
+                            },
+                            color: '#fff', // Text color
+                            offset: -10
+                        },
+                    },
+                },
+                plugins: [ChartDataLabels],
             });
 
 
@@ -464,7 +470,7 @@
                 apiUrl += 'pelatihan=' + pelatihan + '&';
             }
             if (angkatan != null && angkatan != "Semua Angkatan") {
-                apiUrl += 'angkatan=' + angkatan + '&';
+                apiUrl += 'angkatan=' + angkatan.replace("Angkatan ", "") + '&';
             }
 
             // fetch data dari API
@@ -560,6 +566,32 @@
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    function setDropdownText(dropdown, selectedText) {
+        var maxLength = 15; // Adjust the maximum length as needed
+        var trimmedText = selectedText.length > maxLength ? selectedText.substring(0, maxLength) + '...' : selectedText;
+        dropdown.textContent = trimmedText;
+    }
+
+    function initializeDropdown(dropdownId, menuId) {
+        var dropdown = new bootstrap.Dropdown(document.getElementById(dropdownId));
+        var items = document.querySelectorAll('#' + menuId + ' a.dropdown-item');
+
+        items.forEach(function (item) {
+            item.addEventListener('click', function () {
+                var selectedText = this.textContent.trim();
+                setDropdownText(document.getElementById(dropdownId), selectedText);
+            });
+        });
+    }
+
+    initializeDropdown('kategoriDropdown', 'kategoriDropdownMenu');
+    initializeDropdown('tahunDropdown', 'tahunDropdownMenu');
+    initializeDropdown('pelatihanDropdown', 'pelatihanDropdownMenu');
+    initializeDropdown('anggaranDropdown', 'anggaranDropdownMenu');
+    initializeDropdown('angkatanDropdown', 'angkatanDropdownMenu');
+});
 
       </script>
 

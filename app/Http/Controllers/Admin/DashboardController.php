@@ -37,6 +37,17 @@ class DashboardController extends Controller
         $pelatihan = PelatihanModel::select('judul')->distinct()->get();
         $sesi_pelatihan = SesiPelatihanModel::all();
         $angkatan = SesiPelatihanModel::select('angkatan')->distinct()->get();
+        $angkatan = collect($angkatan)->map(function ($item) {
+            return $this->romanToInteger($item->angkatan);
+        })->toArray();
+
+        usort($angkatan, function ($a, $b) {
+            return $a <=> $b;
+        });
+
+        // Convert sorted values back to Roman numerals
+        $angkatan = array_map([$this, 'integerToRoman'], $angkatan);
+
 
         $filter = $request->input('filter', 'hari_ini');
 
@@ -50,6 +61,27 @@ class DashboardController extends Controller
             'sesi_pelatihan',
             'angkatan'
         ));
+    }
+
+    private function romanToInteger($roman) {
+        $romanNumerals = [
+            'I' => 1,
+            'II' => 2,
+            'III' => 3,
+            'IV' => 4,
+            'V' => 5,
+        ];
+        return $romanNumerals[$roman];
+    }
+    private function integerToRoman($int) {
+        $romanNumerals = [
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V'
+        ];
+        return $romanNumerals[$int];
     }
 
     public function getDataPelatihan(Request $request) {
@@ -314,20 +346,21 @@ class DashboardController extends Controller
             'Tidak Lulus' => 0,
             'Proses' => 0,
         ];
+
         foreach ($query as $data) {
             $id_user = $data->user->id;
-            // $status = $data->status_seleksi_daftar_ulang;
             $status = $data->keterangan;
+
             if ($status != null) {
-                $kompetensi[$status] = $data->where('keterangan', $status)->count();
-            }
-            elseif ($status == null) {
-                $kompetensi['Proses'] = $data->where('keterangan', $status)->count();
+                $kompetensi[$status]++;
+            } elseif ($status == null) {
+                $kompetensi['Proses']++;
             }
         }
 
         return $kompetensi;
     }
+
 
     public function getStatistik(Request $request) {
         // kamingsun ganti pengecekan lewat pelatihan buat cari siswa bukan kandidat

@@ -610,6 +610,8 @@
     <script src="{{ asset('tema') }}/assets/libs/morris.js06/morris.min.js"></script>
     <script src="{{ asset('tema') }}/assets/libs/chart.js/Chart.min.js"></script>
     <script src="{{ asset('tema') }}/assets/libs/raphael/raphael.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@1.0.0"></script>
 
     <!-- third party js -->
     <script src="{{ asset('tema') }}/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -635,6 +637,8 @@
     <script src="{{ asset('tema') }}/assets/libs/raphael/raphael.min.js"></script>
     <script src="{{ asset('tema') }}/assets/libs/morris.js06/morris.min.js"></script>
     <script src="{{ asset('tema') }}/assets/libs/chart.js/Chart.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0/chartjs-plugin-datalabels.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@1.0.0"></script>
     {{-- <script src="{{ asset('tema') }}/assets/js/pages/dashboard.init.js"></script> --}}
 
     <!-- App js-->
