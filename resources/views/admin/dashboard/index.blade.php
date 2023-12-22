@@ -265,13 +265,15 @@
                     plugins: {
                         datalabels: {
                             formatter: (value, ctx) => {
-                                let sum = 0;
-                                let dataArr = ctx.chart.data.datasets[0].data;
-                                dataArr.map(data => {
-                                    sum += data;
-                                });
-                                let percentage = ((value * 100) / sum).toFixed(2) + "%";
-                                return percentage;
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+
+                                // Check if the value is not zero before displaying the percentage
+                                if (value !== 0) {
+                                    let percentage = ((value * 100) / sum).toFixed(2) + "%";
+                                    return percentage;
+                                } else {
+                                    return ''; // Return an empty string to hide the label
+                                }
                             },
                             color: '#fff', // Text color
                             offset: -10
@@ -280,6 +282,7 @@
                 },
                 plugins: [ChartDataLabels],
             });
+
 
             //pie chart bar update
             if (myDoughnutChart) {
@@ -309,13 +312,15 @@
                     plugins: {
                         datalabels: {
                             formatter: (value, ctx) => {
-                                let sum = 0;
-                                let dataArr = ctx.chart.data.datasets[0].data;
-                                dataArr.map(data => {
-                                    sum += data;
-                                });
-                                let percentage = ((value * 100) / sum).toFixed(2) + "%";
-                                return percentage;
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+
+                                // Check if the value is not zero before displaying the percentage
+                                if (value !== 0) {
+                                    let percentage = ((value * 100) / sum).toFixed(2) + "%";
+                                    return percentage;
+                                } else {
+                                    return ''; // Return an empty string to hide the label
+                                }
                             },
                             color: '#fff', // Text color
                             offset: -10
